@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+:root {
+	height: 100dvh;
+}
+
+@layer base {
+	:root {
+		--background: 249 100% 3.92%;
+		--foreground: 0 1% 98.82%;
+		--primary-foreground: 260 100% 97.06%;
+		--muted-foreground: 247.5 80% 96.08%;
+	}
+}
+
+@layer base {
+	body {
+		@apply flex flex-col items-center justify-between bg-background text-foreground;
+	}
+
+	.hero:before {
+		background: radial-gradient(37.74% 81.78% at 50% 26.56%, rgba(148, 101, 255, 0.08) 0%, rgba(3, 0, 20, 0) 100%);
+		/* content:""; */
+		display: block;
+		height: 900px;
+		left: 50%;
+		pointer-events: none;
+		position: absolute;
+		top: -173px;
+		transform: translate(-50%);
+		width: 1440px;
+		z-index: 1;
+	}
+}
