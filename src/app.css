@@ -12,6 +12,7 @@ body,
 	:root {
 		--background: 249 100% 3.92%;
 		--foreground: 0 1% 98.82%;
+		--primary: 0 75% 59%;
 		--primary-foreground: 260 100% 97.06%;
 		--muted-foreground: 240 5% 55.9%;
 	}
@@ -19,7 +20,7 @@ body,
 
 @layer base {
 	body {
-		@apply flex flex-col items-center justify-between bg-background text-foreground;
+		@apply overflow-x-hidden bg-background text-foreground;
 	}
 
 	.hero:before {
