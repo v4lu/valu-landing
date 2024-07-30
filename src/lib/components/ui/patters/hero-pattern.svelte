@@ -3,7 +3,7 @@
 	let { children }: HTMLAttributes<HTMLDivElement> = $props();
 </script>
 
-<div class="relative mt-[60px] min-h-[calc(100dvh-60px)] w-full flex-1">
+<div class="relative mt-[60px] min-h-[calc(100dvh-60px)] w-full flex-1 overflow-x-hidden">
 	<div class="absolute inset-x-0 -top-0 opacity-30">
 		<div class="absolute inset-0 mx-auto h-[27rem] max-w-lg sm:h-64">
 			<svg
@@ -27,7 +27,7 @@
 		</div>
 	</div>
 	<svg
-		class="z-1 absolute inset-0 h-full w-full stroke-neutral-200/10"
+		class="z-1 absolute inset-0 h-full w-full stroke-neutral-200/15"
 		aria-hidden="true"
 		style="mask-image: radial-gradient(100% 100% at top left, white, transparent);"
 	>
@@ -68,7 +68,7 @@
 		aria-hidden="true"
 	>
 		<div
-			class="aspect-[1108/632] w-[69.25rem] bg-gradient-to-r from-[#ff9797] to-[#e54646] opacity-5"
+			class="aspect-[1108/632] w-[69.25rem] bg-gradient-to-r from-[#ff9797] to-[#e54646] opacity-10"
 			style="clip-path: polygon(73.6% 51.7%, 91.7% 11.8%, 100% 46.4%, 97.4% 82.2%, 92.5% 84.9%, 75.7% 64%, 55.3% 47.5%, 46.5% 49.4%, 45% 62.9%, 50.3% 87.2%, 21.3% 64.1%, 0.1% 100%, 5.4% 51.1%, 21.4% 63.9%, 58.9% 0.2%, 73.6% 51.7%);"
 		></div>
 	</div>

@@ -43,6 +43,23 @@ module.exports = {
         'badge-shadow': 'inset 0 -7px 11px #a48fff1f'
       },
       keyframes: {
+        fadeUp: {
+          '0%': { opacity: '0', transform: 'translateY(50px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
+        },
+        fadeDown: {
+          '0%': { opacity: '0', transform: 'translateY(-50px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
+        },
+
+        fadeRight: {
+          '0%': { opacity: '0', transform: 'translateX(-50px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' }
+        },
+        fadeLeft: {
+          '0%': { opacity: '0', transform: 'translateX(50px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' }
+        },
         'slide-from-right': {
           '0%': { transform: 'translateX(100%)' },
           '100%': { transform: 'translateX(0)' }
@@ -58,7 +75,11 @@ module.exports = {
       },
       animation: {
         'slide-from-right': 'slide-from-right 0.5s ease-in-out',
-        'hero-black-hole-stars-rotate': 'heroBlackHoleStarsRotate 70s linear infinite'
+        'hero-black-hole-stars-rotate': 'heroBlackHoleStarsRotate 70s linear infinite',
+        'fade-up': 'fadeUp 1.5s cubic-bezier(0.44, 1, 0.36, 1)',
+        'fade-down': 'fadeDown 1.5s cubic-bezier(0.44, 1, 0.36, 1)',
+        'fade-right': 'fadeRight 1.5s cubic-bezier(0.44, 1, 0.86, 1)',
+        'fade-left': 'fadeLeft 1.5s cubic-bezier(0.44, 1, 0.86, 1)'
       },
       transitionTimingFunction: {
         cubic: 'cubic-bezier(0.6,0.6,0,1)'
