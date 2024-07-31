@@ -89,7 +89,7 @@ module.exports = {
   },
   plugins: [
     require('tailwindcss-animate'),
-    function({ matchUtilities, theme }) {
+    function ({ matchUtilities, theme }) {
       matchUtilities(
         {
           'bg-grid': (value) => ({

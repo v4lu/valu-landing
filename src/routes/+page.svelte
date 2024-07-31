@@ -1,5 +1,13 @@
 <script lang="ts">
-	import { AboutSection, HeroHeader, HeroPattern } from '$lib/components/landing';
+	import {
+		AboutSection,
+		ContactSection,
+		HeroHeader,
+		HeroPattern,
+		NewsletterSection,
+		OfferingSection,
+		ProjectsSection
+	} from '$lib/components/landing';
 </script>
 
 <main>
@@ -13,4 +21,9 @@
 		</section>
 	</HeroPattern>
 	<AboutSection />
+	<ProjectsSection />
+	<OfferingSection />
+	<ContactSection />
+
+	<NewsletterSection />
 </main>
