@@ -2,64 +2,39 @@
 	import { onMount } from 'svelte';
 	import { ArrowLeft, ArrowRight } from 'lucide-svelte';
 	import { TitleLayout } from '../ui/title-layout';
-	import { Button } from '$lib/components/ui/button';
-	import { Badge } from '$lib/components/ui/badge';
+	import { ProjectCard } from '../cards';
 
 	interface Project {
 		title: string;
 		description: string;
 		image: string;
-		badges: string[];
-		mainBadge: string;
-		link: string;
-		github: string;
 	}
 
 	const projects: Project[] = [
 		{
 			title: 'AI-Powered Analytics Dashboard',
 			description: 'Real-time data visualization with machine learning insights for business intelligence.',
-			image: 'https://via.placeholder.com/510x286.png?text=AI+Analytics+Dashboard',
-			badges: ['React', 'TensorFlow.js', 'D3.js'],
-			mainBadge: 'AI',
-			link: 'https://example.com/ai-dashboard',
-			github: 'https://github.com/example/ai-dashboard'
+			image: 'https://via.placeholder.com/510x286.png?text=AI+Analytics+Dashboard'
 		},
 		{
 			title: 'Blockchain-based Supply Chain',
 			description: 'Transparent and secure supply chain management using blockchain technology.',
-			image: 'https://via.placeholder.com/510x286.png?text=Blockchain+Supply+Chain',
-			badges: ['Ethereum', 'Solidity', 'Web3.js'],
-			mainBadge: 'Blockchain',
-			link: 'https://example.com/blockchain-supply',
-			github: 'https://github.com/example/blockchain-supply'
+			image: 'https://via.placeholder.com/510x286.png?text=Blockchain+Supply+Chain'
 		},
 		{
 			title: 'AR Product Visualization',
 			description: 'Augmented reality app for visualizing products in real-world environments.',
-			image: 'https://via.placeholder.com/510x286.png?text=AR+Product+Viz',
-			badges: ['Unity', 'ARKit', 'Vuforia'],
-			mainBadge: 'AR',
-			link: 'https://example.com/ar-product-viz',
-			github: 'https://github.com/example/ar-product-viz'
+			image: 'https://via.placeholder.com/510x286.png?text=AR+Product+Viz'
 		},
 		{
 			title: 'IoT Smart Home Hub',
 			description: 'Central control system for managing various smart home devices and automations.',
-			image: 'https://via.placeholder.com/510x286.png?text=IoT+Smart+Home',
-			badges: ['Raspberry Pi', 'MQTT', 'Node.js'],
-			mainBadge: 'IoT',
-			link: 'https://example.com/iot-smart-home',
-			github: 'https://github.com/example/iot-smart-home'
+			image: 'https://via.placeholder.com/510x286.png?text=IoT+Smart+Home'
 		},
 		{
 			title: 'Neural Network Music Composer',
 			description: 'AI-powered application that generates original music compositions.',
-			image: 'https://via.placeholder.com/510x286.png?text=AI+Music+Composer',
-			badges: ['Python', 'TensorFlow', 'Magenta'],
-			mainBadge: 'AI',
-			link: 'https://example.com/ai-music-composer',
-			github: 'https://github.com/example/ai-music-composer'
+			image: 'https://via.placeholder.com/510x286.png?text=AI+Music+Composer'
 		}
 	];
 
@@ -113,31 +88,7 @@
 			class="hide-scrollbar flex transform gap-4 overflow-x-scroll px-5 py-6 transition-transform md:gap-7 md:px-0"
 		>
 			{#each projects as project}
-				<div
-					class="relative flex w-full shrink-0 snap-center flex-col items-center justify-between gap-3 overflow-hidden rounded-md border border-white/10 bg-[rgba(255,255,255,0.05)] pb-4 backdrop-blur-sm md:min-w-[510px] md:basis-[calc(42.66%-12px)] md:gap-5"
-				>
-					<div class="absolute right-2 top-0 z-20 mt-2 flex flex-wrap justify-end gap-2 md:mt-3 md:max-w-[360px]">
-						<Badge>{project.mainBadge}</Badge>
-						{#each project.badges as badge}
-							<span class="flex items-center justify-center rounded-md bg-primary px-1 text-xs">{badge}</span>
-						{/each}
-					</div>
-					<a href={project.link} class="relative w-full cursor-pointer">
-						<img
-							src={project.image}
-							alt={project.title}
-							width={510}
-							height={286}
-							class="aspect-video h-full w-full lg:h-fit lg:w-fit"
-						/>
-						<div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/50"></div>
-					</a>
-					<div class="flex h-fit flex-col justify-between px-4">
-						<h3 class="text-xl text-white md:text-2xl">{project.title}</h3>
-						<p class="md:text-md mt-1 text-sm text-gray-300">{project.description}</p>
-						<Button>Visit Project</Button>
-					</div>
-				</div>
+				<ProjectCard {...project} />
 			{/each}
 		</div>
 		<button

@@ -6,13 +6,14 @@
 		HeroPattern,
 		NewsletterSection,
 		OfferingSection,
-		ProjectsSection
+		ProjectsSection,
+		TestimonialSection
 	} from '$lib/components/landing';
 </script>
 
 <main>
 	<HeroPattern>
-		<section class="container grid gap-10 pt-24 lg:grid-cols-[1fr,45%] lg:pt-[190px]">
+		<section class="container grid gap-10 pt-24 lg:grid-cols-[1fr,45%] lg:pt-[220px]">
 			<HeroHeader />
 			<div class="relative w-full rounded-lg lg:h-[350px]">
 				<img src="https://placehold.co/600x400" alt="Product showcase" class="w-full object-cover" />
@@ -24,6 +25,6 @@
 	<ProjectsSection />
 	<OfferingSection />
 	<ContactSection />
-
+	<TestimonialSection />
 	<NewsletterSection />
 </main>
