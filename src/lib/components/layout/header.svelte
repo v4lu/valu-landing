@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Button } from '../ui/button';
+	import { Icons } from '../icons';
 
 	let scrollY: number;
 	let headerElement: HTMLElement;
@@ -30,7 +31,9 @@
 	class:backdrop-blur-[12px]={isScrolled}
 >
 	<header class="container flex w-full items-center justify-between py-4">
-		<a href="/" class="flex items-center"> Logo </a>
+		<a href="/" class="flex items-center">
+			<Icons.Logo />
+		</a>
 		<div class="flex items-center">
 			<Button class="">Hello World</Button>
 		</div>

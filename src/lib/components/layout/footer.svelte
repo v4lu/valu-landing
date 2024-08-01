@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Icons } from '../icons';
 	import { Button } from '../ui/button';
 	import { Input } from '../ui/forms';
 
@@ -39,7 +40,7 @@
 	<div class="container mx-auto px-6 pb-6 pt-8">
 		<div class="mb-8 flex flex-col items-start justify-between lg:flex-row lg:items-center">
 			<div class="mb-8 lg:mb-0">
-				<div class="text-3xl font-bold">Logo</div>
+				<Icons.Logo />
 			</div>
 			<div class="grid grid-cols-2 gap-x-8 gap-y-2 sm:grid-cols-4 lg:mx-4">
 				{#each footerLinks as link}

@@ -4,6 +4,7 @@ import Seo from './seo.svelte';
 import UI from './ui.svelte';
 import SocialMedia from './social-media.svelte';
 import DigitalMarketing from './digital-marketing.svelte';
+import Logo from './logo.svelte';
 
 export type IconProps = {
 	color?: string;
@@ -19,5 +20,6 @@ export const Icons = {
 	Seo,
 	UI,
 	SocialMedia,
-	DigitalMarketing
+	DigitalMarketing,
+	Logo
 };
