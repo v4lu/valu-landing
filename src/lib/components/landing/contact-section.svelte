@@ -38,18 +38,6 @@
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
 		pending = true;
-
-		try {
-			// Replace this with your actual form submission logic
-			await new Promise((resolve) => setTimeout(resolve, 1000));
-			firstName = '';
-			lastName = '';
-			email = '';
-			message = '';
-		} catch (error) {
-		} finally {
-			pending = false;
-		}
 	}
 </script>
 

@@ -3,28 +3,6 @@
 	import { cn } from '$lib/cn';
 
 	const cells = [1, 2, 3, 4, 5];
-	const expertiseAreas = [
-		{
-			title: 'AI & Machine Learning',
-			description: 'Cutting-edge AI solutions to drive intelligent decision-making and automation.'
-		},
-		{
-			title: 'Blockchain Development',
-			description: 'Secure and transparent blockchain applications for various industries.'
-		},
-		{
-			title: 'Cloud Architecture',
-			description: 'Scalable and robust cloud solutions for optimal performance and reliability.'
-		},
-		{
-			title: 'UX/UI Design',
-			description: 'Intuitive and visually appealing interfaces that enhance user engagement.'
-		},
-		{
-			title: 'Cybersecurity',
-			description: 'Advanced security measures to protect your digital assets and data.'
-		}
-	];
 </script>
 
 <section class="container py-14">
