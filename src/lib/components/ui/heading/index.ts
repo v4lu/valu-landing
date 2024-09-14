@@ -5,7 +5,7 @@ export const headerStyles = cva(
 	{
 		variants: {
 			size: {
-				hero: 'text-4xl font-bold md:text-5xl text-left lg:text-6xl xl:text-7xl',
+				hero: 'text-4xl font-bold md:text-5xl text-left lg:text-6xl xl:text-8xl',
 				title: 'text-center text-3xl md:text-[48px] md:leading-[60px] font-semibold',
 				subtitle: 'text-center text-xl md:text-2xl font-medium'
 			}

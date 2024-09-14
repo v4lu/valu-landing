@@ -24,10 +24,12 @@ export const buttonVariants = cva(
 					'after:border after:border-[rgba(255,151,151,0.6)]',
 					// Hover states
 					'after:opacity-0 hover:before:opacity-0 hover:after:opacity-100'
-				]
+				],
+				ghost: 'hover:bg-accent'
 			},
 			size: {
-				default: 'text-sm px-4 rounded-md py-2'
+				default: 'text-sm px-4 rounded-md py-2',
+				lg: 'px-6 py-3 rounded-md'
 			}
 		},
 		defaultVariants: {
