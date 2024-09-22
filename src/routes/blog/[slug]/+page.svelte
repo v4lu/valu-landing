@@ -1,9 +1,45 @@
 <script lang="ts">
 	let { data } = $props();
+
+	type TocType = {
+		id: string;
+		text: string | null;
+		level: number;
+	};
+
+	let toc = $state<TocType[]>([]);
+
+	function slugify(text: string): string {
+		return text
+			.toLowerCase()
+			.replace(/[^a-z0-9]+/g, '-')
+			.replace(/(^-|-$)+/g, '');
+	}
+
+	$effect(() => {
+		const headers = document.querySelectorAll<HTMLHeadingElement>('.content h2, .content h3');
+		toc = Array.from(headers).map((header, index) => {
+			const text = header.textContent;
+			const id = text ? slugify(text) : `section-${index}`;
+			header.id = id;
+			return {
+				id,
+				text,
+				level: header.tagName === 'H2' ? 2 : 3
+			};
+		});
+	});
+
+	function scrollToSection(id: string) {
+		const element = document.getElementById(id);
+		if (element) {
+			element.scrollIntoView({ behavior: 'smooth' });
+		}
+	}
 </script>
 
-<main class="container mt-40">
-	<article class="prose prose-invert lg:prose-xl">
+<main class="container mt-40 flex">
+	<article class="prose prose-invert flex-grow lg:prose-xl">
 		<header class="mb-8">
 			<h1
 				class="mb-4 bg-gradient-to-b from-foreground to-muted-foreground bg-clip-text text-4xl font-bold text-transparent sm:text-5xl"
@@ -19,16 +55,37 @@
 					/>
 				</div>
 			{/if}
-			<p class="italic text-muted-foreground">Published on {data.date}</p>
-			<p class="mt-4 text-lg text-accent">{data.desc}</p>
+			<p class="w-full text-right italic text-muted-foreground">Published on {data.date}</p>
 		</header>
 		<div class="content">
 			{@html data.content}
 		</div>
 	</article>
+	<aside class="sticky top-40 ml-12 hidden w-64 self-start xl:block">
+		<nav class="toc">
+			<h2 class="mb-4 text-lg font-semibold">Table of Contents</h2>
+			<ul class="space-y-2">
+				{#each toc as item (item.id)}
+					<li>
+						<button
+							class="cursor-pointer transition-colors hover:text-primary"
+							style="margin-left: {(item.level - 2) * 1}rem"
+							onclick={() => scrollToSection(item.id)}
+						>
+							{item.text}
+						</button>
+					</li>
+				{/each}
+			</ul>
+		</nav>
+	</aside>
 </main>
 
 <style lang="postcss">
+	.toc {
+		@apply rounded-lg bg-background/10 p-4;
+	}
+
 	@media (min-width: 1280px) {
 		:global(.content p),
 		:global(.content ul),
