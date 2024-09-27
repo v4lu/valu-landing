@@ -7,6 +7,15 @@ type Post = {
 	title: string;
 	date: string;
 	desc: string;
+	coverImage: string;
+	path: string;
+};
+
+type Metadata = {
+	title: string;
+	date: string;
+	desc: string;
+	cover: string;
 };
 
 export const load: PageServerLoad = async () => {
@@ -17,14 +26,14 @@ export const load: PageServerLoad = async () => {
 		files.map(async (file) => {
 			const filePath = join(postsDirectory, file);
 			await readFile(filePath, 'utf-8');
-			const { metadata } = (await import(`../../blogs/${file}`)) as {
-				metadata: { title: string; date: string; desc: string };
-			};
+			const { metadata } = (await import(`../../blogs/${file}`)) as { metadata: Metadata };
 			return {
 				slug: file.replace('.md', ''),
 				title: metadata.title,
 				date: metadata.date,
-				desc: metadata.desc
+				desc: metadata.desc,
+				path: `/blog/${file.slice(0, -3)}`,
+				coverImage: metadata.cover
 			};
 		})
 	);

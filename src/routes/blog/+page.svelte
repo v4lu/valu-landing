@@ -14,7 +14,7 @@
 
 	<ul class="mt-12 grid gap-8 xl:grid-cols-3">
 		{#each data.posts as post}
-			<BlogCard title={post.title} desc={post.desc} date={post.date} />
+			<BlogCard path={post.path} coverImage={post.coverImage} title={post.title} desc={post.desc} date={post.date} />
 		{/each}
 	</ul>
 </main>

@@ -1,13 +1,26 @@
 <script lang="ts">
-	let { data } = $props();
+	import Prism from 'prismjs';
+	import 'prismjs/components/prism-bash';
+	import 'prismjs/components/prism-css';
+	import 'prismjs/components/prism-docker';
+	import 'prismjs/components/prism-go';
+	import 'prismjs/components/prism-java';
+	import 'prismjs/components/prism-javascript';
+	import 'prismjs/components/prism-kotlin';
+	import 'prismjs/components/prism-markup';
+	import 'prismjs/components/prism-typescript';
 
+	import 'prismjs/themes/prism-okaidia.css';
+
+	// Add more languages as needed
+	let { data } = $props();
 	type TocType = {
 		id: string;
 		text: string | null;
 		level: number;
 	};
-
 	let toc = $state<TocType[]>([]);
+	let activeSection = $state('');
 
 	function slugify(text: string): string {
 		return text
@@ -28,6 +41,19 @@
 				level: header.tagName === 'H2' ? 2 : 3
 			};
 		});
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						activeSection = entry.target.id;
+					}
+				});
+			},
+			{ rootMargin: '-100px 0px -66% 0px' }
+		);
+
+		headers.forEach((header) => observer.observe(header));
 	});
 
 	function scrollToSection(id: string) {
@@ -36,10 +62,12 @@
 			element.scrollIntoView({ behavior: 'smooth' });
 		}
 	}
+
+	$effect(() => Prism.highlightAll());
 </script>
 
-<main class="container mt-40 flex">
-	<article class="prose prose-invert flex-grow lg:prose-xl">
+<main class="mx-auto mt-40 flex w-full">
+	<article class="prose prose-invert mx-auto flex-grow lg:prose-xl">
 		<header class="mb-8">
 			<h1
 				class="mb-4 bg-gradient-to-b from-foreground to-muted-foreground bg-clip-text text-4xl font-bold text-transparent sm:text-5xl"
@@ -61,15 +89,19 @@
 			{@html data.content}
 		</div>
 	</article>
-	<aside class="sticky top-40 ml-12 hidden w-64 self-start xl:block">
-		<nav class="toc">
-			<h2 class="mb-4 text-lg font-semibold">Table of Contents</h2>
-			<ul class="space-y-2">
+	<aside class="sticky right-12 top-40 ml-12 hidden w-64 self-start xl:block">
+		<nav class="rounded-lg border border-primary/10 bg-slate-800/10 p-6 shadow-lg backdrop-blur-2xl">
+			<h2 class="mb-4 text-xl font-bold text-primary">Table of Contents</h2>
+			<ul
+				class="scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-background/50 hover:scrollbar-thumb-primary max-h-[calc(100vh-200px)] space-y-2 overflow-y-auto pr-2"
+			>
 				{#each toc as item (item.id)}
 					<li>
 						<button
-							class="cursor-pointer transition-colors hover:text-primary"
-							style="margin-left: {(item.level - 2) * 1}rem"
+							class="w-full cursor-pointer text-left text-sm font-medium text-foreground/70 transition-all duration-200 ease-in-out hover:font-semibold hover:text-primary"
+							class:font-bold={activeSection === item.id}
+							class:text-primary={activeSection === item.id}
+							style="padding-left: {(item.level - 2) * 1}rem"
 							onclick={() => scrollToSection(item.id)}
 						>
 							{item.text}
@@ -82,10 +114,6 @@
 </main>
 
 <style lang="postcss">
-	.toc {
-		@apply rounded-lg bg-background/10 p-4;
-	}
-
 	@media (min-width: 1280px) {
 		:global(.content p),
 		:global(.content ul),
@@ -120,7 +148,7 @@
 	}
 
 	:global(.content img) {
-		@apply my-4 h-auto max-w-full rounded-lg shadow-lg;
+		@apply my-4 h-auto max-w-full rounded-lg bg-cover bg-center object-cover object-center shadow-lg;
 	}
 
 	:global(.content blockquote) {
@@ -128,11 +156,10 @@
 	}
 
 	:global(.content pre) {
-		@apply my-4 overflow-x-auto rounded-lg bg-background/50 p-4;
+		@apply my-4 overflow-x-auto rounded-lg border border-white/10 bg-slate-900/20 p-4; /* Adjusted for Prism Okaidia theme */
 	}
-
 	:global(.content code) {
-		@apply rounded bg-background/50 px-1 py-0.5 font-mono text-sm;
+		@apply rounded px-1 py-0.5 font-mono text-sm; /* Adjusted for Prism Okaidia theme */
 	}
 
 	:global(.content a) {
