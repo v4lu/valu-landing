@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export const load: PageServerLoad = async () => {
-	const postsDirectory = join(__dirname, '..', '..', 'blogs');
+	const postsDirectory = join(__dirname, '..', 'src', 'blogs');
 	const files = await readdir(postsDirectory);
 
 	const posts: Post[] = await Promise.all(

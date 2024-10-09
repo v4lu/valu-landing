@@ -16,6 +16,9 @@ COPY --from=builder /app/package.json /app/pnpm-lock.yaml* ./
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/src ./src
 RUN pnpm install --prod --no-frozen-lockfile
+
+RUN mkdir -p /app/build/src && cp -r /app/src/blogs /app/build/src/
+
 EXPOSE 3000
 ENV NODE_ENV=production
 CMD ["node", "build"]
