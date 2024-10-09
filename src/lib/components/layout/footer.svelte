@@ -27,7 +27,7 @@
 <footer class="relative mt-24 border-t border-white/10 bg-[rgba(3,0,20,0.08)] backdrop-blur-[12px]">
 	<div class="absolute inset-x-0 -top-4 h-12 bg-gradient-to-b from-transparent to-[rgba(3,0,20,0.08)]"></div>
 	<div class="container mx-auto px-6 pb-6 pt-8">
-		<div class="mb-8 flex flex-col items-start justify-between lg:flex-row lg:items-center">
+		<div class="mb-8 flex flex-col items-center justify-between lg:flex-row lg:items-center">
 			<div class="mb-8 lg:mb-0">
 				<Icons.Logo />
 			</div>

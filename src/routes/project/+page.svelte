@@ -5,6 +5,9 @@
 	let container = $state<HTMLElement>();
 </script>
 
+<svelte:head>
+	<title>Valu Media - Projects</title>
+</svelte:head>
 <main bind:this={container} class="container mt-32 flex-1">
 	<div class="relative z-10">
 		<div in:fly={{ y: 50, duration: 800 }}>

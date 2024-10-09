@@ -66,6 +66,9 @@
 	$effect(() => Prism.highlightAll());
 </script>
 
+<svelte:head>
+	<title>Valu Media - {data.title}</title>
+</svelte:head>
 <main class="mx-auto mt-40 flex w-full">
 	<article class="prose prose-invert mx-auto flex-grow lg:prose-xl">
 		<header class="mb-8">

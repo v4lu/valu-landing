@@ -41,7 +41,7 @@
 
 <svelte:window on:scroll={handleScroll} on:resize={handleScroll} />
 
-<section bind:this={container} class="relative py-14">
+<section bind:this={container} class="container relative py-14">
 	<div class="relative z-10 mx-auto max-w-xl sm:text-center">
 		{#if titleVisible}
 			<div in:fly={{ y: 50, duration: 800 }}>

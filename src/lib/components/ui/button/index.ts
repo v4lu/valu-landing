@@ -29,7 +29,8 @@ export const buttonVariants = cva(
 			},
 			size: {
 				default: 'text-sm px-4 rounded-md py-2',
-				lg: 'px-6 py-3 rounded-md'
+				lg: 'px-6 py-3 rounded-md',
+				icon: 'size-10 rounded-md p-0'
 			}
 		},
 		defaultVariants: {

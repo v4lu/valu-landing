@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
+	import { ChevronLeft, ChevronRight } from 'lucide-svelte';
 	import { TitleLayout } from '../ui/title-layout';
 	import { WorkshopsCard } from '../cards';
+	import { Button } from '../ui/button';
 	import { cn } from '$lib/cn';
 	import type { Post } from '$lib/types';
 
@@ -11,6 +13,7 @@
 
 	let { items }: Props = $props();
 	let container = $state<HTMLElement>();
+	let scrollContainer = $state<HTMLElement>();
 	let titleVisible = $state(false);
 	let visibleItems = $state(items.map(() => false));
 
@@ -18,11 +21,9 @@
 		if (container) {
 			const rect = container.getBoundingClientRect();
 			const triggerPoint = window.innerHeight * 0.8;
-
 			if (!titleVisible && rect.top < triggerPoint) {
 				titleVisible = true;
 			}
-
 			container.querySelectorAll('.workshop-item').forEach((item, index) => {
 				if (!visibleItems[index]) {
 					const itemRect = item.getBoundingClientRect();
@@ -32,6 +33,13 @@
 					}
 				}
 			});
+		}
+	}
+
+	function scrollHorizontally(direction: 'left' | 'right') {
+		if (scrollContainer) {
+			const scrollAmount = direction === 'left' ? -300 : 300;
+			scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
 		}
 	}
 
@@ -52,7 +60,9 @@
 			</div>
 		{/if}
 	</div>
-	<div class="mt-8 grid h-[600px] grid-cols-10 grid-rows-2 gap-6">
+
+	<!-- Desktop/Tablet View -->
+	<div class="mt-8 hidden h-[600px] grid-cols-10 grid-rows-2 gap-6 md:grid">
 		{#each items as item, i}
 			<div
 				class={cn(
@@ -81,4 +91,52 @@
 			</div>
 		{/each}
 	</div>
+
+	<!-- Mobile View -->
+	<div class="relative mt-8 md:hidden">
+		<div class="overflow-hidden">
+			<ul bind:this={scrollContainer} class="hide-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto">
+				{#each items as item, i}
+					<li class="workshop-item snap-center" style="min-width: 280px; max-width: 90vw;">
+						{#if visibleItems[i]}
+							<div in:fly={{ y: 50, duration: 800, delay: i * 200 }}>
+								<WorkshopsCard
+									class="h-[20rem] w-full"
+									date={item.date}
+									title={item.title}
+									desc={item.desc}
+									path={item.path}
+									coverImage={item.coverImage}
+								/>
+							</div>
+						{:else}
+							<div class="h-full w-full"></div>
+						{/if}
+					</li>
+				{/each}
+			</ul>
+		</div>
+		<Button
+			onclick={() => scrollHorizontally('left')}
+			class="absolute left-0 top-1/2 -translate-y-1/2 rounded-full bg-gray-800/50 p-2"
+		>
+			<ChevronLeft size={24} />
+		</Button>
+		<Button
+			onclick={() => scrollHorizontally('right')}
+			class="absolute right-0 top-1/2 -translate-y-1/2 rounded-full bg-gray-800/50 p-2"
+		>
+			<ChevronRight size={24} />
+		</Button>
+	</div>
 </section>
+
+<style>
+	.hide-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	.hide-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+</style>

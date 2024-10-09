@@ -39,6 +39,9 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Valu Media - Blogs</title>
+</svelte:head>
 <svelte:window on:scroll={handleScroll} on:resize={handleScroll} />
 
 <main bind:this={container} class="container mt-32 flex-1">

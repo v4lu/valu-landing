@@ -1,13 +1,15 @@
 <script lang="ts">
 	import type { Component } from 'svelte';
+	import { cn } from '$lib/cn';
 
 	type FeatureCardProps = {
 		title: string;
 		desc: string;
 		Icon: Component;
+		class?: string;
 	};
 
-	let { title, desc, Icon }: FeatureCardProps = $props();
+	let { title, desc, Icon, class: className }: FeatureCardProps = $props();
 	let isHovering = $state(false);
 	let mouseX = $state(0);
 	let mouseY = $state(0);
@@ -34,7 +36,10 @@
 	onmouseenter={handleMouseEnter}
 	onmouseleave={handleMouseLeave}
 	onmousemove={handleMouseMove}
-	class="relative grid transform-gpu gap-3 overflow-hidden rounded-xl border bg-transparent p-4 transition-all duration-300 ease-in-out [border:1px_solid_rgba(255,255,255,.1)] hover:shadow-lg"
+	class={cn(
+		'relative grid transform-gpu gap-3 overflow-hidden rounded-xl border bg-transparent p-4 transition-all duration-300 ease-in-out [border:1px_solid_rgba(255,255,255,.1)] hover:shadow-lg',
+		className
+	)}
 	style="--mouse-x: {mouseX}px; --mouse-y: {mouseY}px; --primary: 0 75% 59%;"
 >
 	<svg class="absolute inset-0 h-full w-full" xmlns="http://www.w3.org/2000/svg">
@@ -46,7 +51,7 @@
 		<rect width="100%" height="100%" fill="url(#grid-48)" />
 	</svg>
 	<div
-		class="w-fit transform-gpu rounded-full p-4 [border:1px_solid_rgba(255,255,255,.1)] [box-shadow:0_-20px_80px_-20px_#ff97971f_inset]"
+		class="aspect-square w-fit transform-gpu rounded-full p-4 [border:1px_solid_rgba(255,255,255,.1)] [box-shadow:0_-20px_80px_-20px_#ff97971f_inset]"
 	>
 		<Icon class="size-6 text-primary" />
 	</div>

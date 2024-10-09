@@ -93,34 +93,34 @@
 
 <svelte:window on:scroll={handleScroll} on:resize={handleScroll} />
 
-<section bind:this={container} id="contact" class="container py-14">
+<section bind:this={container} id="contact" class="container py-8 md:py-14">
 	<div class="title-container" style="min-height: 100px;">
 		{#if titleVisible}
 			<div in:fly={{ y: 50, duration: 800 }}>
 				<TitleLayout
-					title="Get in touch with us for any inquiries"
+					title="Get in touch with us"
 					subtitle="Fill out the form below and we'll get back to you as soon as possible."
 				/>
 			</div>
 		{/if}
 	</div>
 
-	<div class="mt-16 grid gap-8 md:grid-cols-[45%,1fr]">
-		<ul class="max-w-md flex-1 space-y-10 px-4 md:px-0">
+	<div class="mt-8 grid gap-8 md:mt-16 md:grid-cols-[45%,1fr]">
+		<ul class="max-w-md flex-1 space-y-6 px-2 md:space-y-10 md:px-0">
 			{#each features as item, i}
 				<li class="feature-item">
 					{#if visibleFeatures[i]}
 						<div in:fly={{ y: 50, duration: 800, delay: i * 200 }} class="flex gap-x-3">
 							<div
-								class="flex h-12 w-12 flex-none items-center justify-center rounded-full border border-white/10 bg-transparent text-red-500 shadow-lg"
+								class="flex h-10 w-10 flex-none items-center justify-center rounded-full border border-white/10 bg-transparent text-red-500 shadow-lg md:h-12 md:w-12"
 							>
-								<Icon icon={item.icon} class="size-5" />
+								<Icon icon={item.icon} class="size-4 md:size-5" />
 							</div>
 							<div>
-								<h4 class="text-lg font-medium tracking-tight text-white">
+								<h4 class="text-base font-medium tracking-tight text-white md:text-lg">
 									{item.name}
 								</h4>
-								<p class="mt-2 text-gray-400 md:text-sm">{item.desc}</p>
+								<p class="mt-1 text-sm text-gray-400 md:mt-2 md:text-base">{item.desc}</p>
 							</div>
 						</div>
 					{/if}
@@ -129,36 +129,38 @@
 		</ul>
 
 		<div
-			class="contact-form mt-6 flex w-full transform-gpu flex-col bg-[rgba(3,0,20,0.08)] backdrop-blur-[12px] md:mt-0 md:rounded-xl md:border md:border-white/10 md:shadow-lg"
+			class="contact-form mt-6 flex h-full w-full transform-gpu flex-col rounded-xl border border-white/10 bg-[rgba(3,0,20,0.08)] shadow-lg backdrop-blur-[12px] md:mt-0"
 		>
 			{#if formVisible}
-				<div in:fly={{ y: 50, duration: 800 }}>
-					<form onsubmit={handleSubmit} class="flex h-full w-full flex-col gap-4 p-6">
-						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-							<div class="space-y-2">
-								<label for="first-name" class="text-sm font-medium text-white">First Name</label>
-								<Input bind:value={firstName} id="first-name" placeholder="Enter your first name" required />
+				<div class="h-full" in:fly={{ y: 50, duration: 800 }}>
+					<form onsubmit={handleSubmit} class="flex h-full w-full flex-1 flex-col justify-between gap-4 p-4 md:p-6">
+						<div class="flex flex-1 flex-col gap-6">
+							<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+								<div class="space-y-3">
+									<label for="first-name" class=" font-medium text-white">First Name</label>
+									<Input bind:value={firstName} id="first-name" placeholder="Enter your first name" required />
+								</div>
+								<div class="space-y-3">
+									<label for="last-name" class="font-medium text-white">Last Name</label>
+									<Input bind:value={lastName} id="last-name" placeholder="Enter your last name" />
+								</div>
 							</div>
-							<div class="space-y-2">
-								<label for="last-name" class="text-sm font-medium text-white">Last Name</label>
-								<Input bind:value={lastName} id="last-name" placeholder="Enter your last name" />
+							<div class="space-y-3">
+								<label for="email" class="font-medium text-white">Email</label>
+								<Input bind:value={email} id="email" type="email" placeholder="Enter your email" required />
+							</div>
+							<div class=" flex-1 space-y-3">
+								<label for="message" class="font-medium text-white">Message</label>
+								<Textarea
+									bind:value={message}
+									id="message"
+									class="h-32 resize-none md:h-full"
+									placeholder="Enter your message"
+									required
+								/>
 							</div>
 						</div>
-						<div class="space-y-2">
-							<label for="email" class="text-sm font-medium text-white">Email</label>
-							<Input bind:value={email} id="email" type="email" placeholder="Enter your email" required />
-						</div>
-						<div class="h-[14rem] h-full space-y-2 pb-8">
-							<label for="message" class="text-sm font-medium text-white">Message</label>
-							<Textarea
-								bind:value={message}
-								id="message"
-								class="h-full resize-none"
-								placeholder="Enter your message"
-								required
-							/>
-						</div>
-						<Button type="submit" disabled={pending} class="h-12 w-full">
+						<Button type="submit" disabled={pending} class="h-12 w-full md:mt-12">
 							{#if pending}
 								<Loader2 class="mr-2 h-4 w-4 animate-spin" />
 							{:else}
