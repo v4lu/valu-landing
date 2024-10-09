@@ -1,12 +1,18 @@
 import { readFile, readdir } from 'node:fs/promises';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { PageServerLoad } from './$types';
 import type { Metadata, Post } from '$lib/types';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 export const load: PageServerLoad = async () => {
-	// eslint-disable-next-line node/prefer-global/process
-	const postsDirectory = join(process.cwd(), 'src/blogs');
+	const postsDirectory = join(__dirname, '..', 'blogs');
+	console.log('Posts directory:', postsDirectory);
+
 	const files = await readdir(postsDirectory);
+	console.log('Files:', files);
 
 	const posts: Post[] = await Promise.all(
 		files.map(async (file) => {

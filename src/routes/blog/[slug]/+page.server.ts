@@ -29,12 +29,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		out: '',
 		push_element: (payload: MockPayload, tag: string, line: number, col: number) => {
 			if (tag === 'h2' || tag === 'h3') {
-				const id =
-					payload.out
-						.split('>')
-						.pop()
-						?.toLowerCase()
-						.replace(/[^\w]+/g, '-') || '';
+				const id = payload.out.split('>').pop()?.toLowerCase().replace(/\W+/g, '-') || '';
 				payload.out += `id="${id}" `;
 			}
 		},
