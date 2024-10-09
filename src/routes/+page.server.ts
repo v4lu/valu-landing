@@ -1,16 +1,18 @@
-import { join } from 'node:path';
 import { readFile, readdir } from 'node:fs/promises';
+import { join } from 'node:path';
 import type { PageServerLoad } from './$types';
 import type { Metadata, Post } from '$lib/types';
 
 export const load: PageServerLoad = async () => {
-	const postsDirectory = join('/app', 'src', 'blogs');
+	// eslint-disable-next-line node/prefer-global/process
+	const postsDirectory = join(process.cwd(), 'src/blogs');
 	const files = await readdir(postsDirectory);
+
 	const posts: Post[] = await Promise.all(
 		files.map(async (file) => {
 			const filePath = join(postsDirectory, file);
 			await readFile(filePath, 'utf-8');
-			const { metadata } = (await import(`../../blogs/${file}`)) as { metadata: Metadata };
+			const { metadata } = (await import(`../blogs/${file}`)) as { metadata: Metadata };
 			return {
 				slug: file.replace('.md', ''),
 				title: metadata.title,
@@ -21,13 +23,17 @@ export const load: PageServerLoad = async () => {
 			};
 		})
 	);
-	const sortedPosts = posts.sort((a, b) => {
-		const parseDate = (dateString: string) => {
-			const [day, month, year] = dateString.split('.').map(Number);
-			return new Date(year, month - 1, day).getTime();
-		};
-		return parseDate(b.date) - parseDate(a.date);
-	});
+
+	const sortedPosts = posts
+		.sort((a, b) => {
+			const parseDate = (dateString: string) => {
+				const [day, month, year] = dateString.split('.').map(Number);
+				return new Date(year, month - 1, day).getTime();
+			};
+			return parseDate(b.date) - parseDate(a.date);
+		})
+		.slice(0, 5);
+
 	return {
 		posts: sortedPosts
 	};
