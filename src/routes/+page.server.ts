@@ -1,5 +1,6 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
+import { load as yamlLoad } from 'js-yaml';
 import type { PageServerLoad } from './$types';
 import type { Metadata, Post } from '$lib/types';
 
@@ -15,7 +16,7 @@ export const load: PageServerLoad = async () => {
 			const filePath = join(postsDirectory, file);
 			const content = await readFile(filePath, 'utf-8');
 			const [, frontmatter] = content.split('---');
-			const metadata: Metadata = JSON.parse(frontmatter);
+			const metadata = yamlLoad(frontmatter.trim()) as Metadata;
 			return {
 				slug: file.replace('.md', ''),
 				title: metadata.title,

@@ -15,6 +15,7 @@ COPY --from=builder /app/package.json /app/pnpm-lock.yaml* ./
 COPY --from=builder /app/build ./build
 COPY --from=builder /app/src/blogs ./build/src/blogs
 RUN pnpm install --prod --no-frozen-lockfile
+RUN pnpm add js-yaml
 
 EXPOSE 3000
 ENV NODE_ENV=production
