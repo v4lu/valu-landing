@@ -13,8 +13,9 @@ export const load: PageServerLoad = async () => {
 	const posts: Post[] = await Promise.all(
 		files.map(async (file) => {
 			const filePath = join(postsDirectory, file);
-			await readFile(filePath, 'utf-8');
-			const { metadata } = (await import(`../blogs/${file}`)) as { metadata: Metadata };
+			const content = await readFile(filePath, 'utf-8');
+			const [, frontmatter] = content.split('---');
+			const metadata: Metadata = JSON.parse(frontmatter);
 			return {
 				slug: file.replace('.md', ''),
 				title: metadata.title,
