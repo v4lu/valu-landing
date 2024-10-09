@@ -1,26 +1,14 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { load as yamlLoad } from 'js-yaml';
+import { marked } from 'marked';
 import type { PageServerLoad } from './$types';
 
-type MockPayload = {
-	out: string;
-	push_element: (payload: MockPayload, tag: string, line: number, col: number) => void;
-	pop_element: () => void;
-};
-
-type MockImport = {
-	push: () => void;
-	pop: () => void;
-};
-
-type PostModule = {
-	metadata: {
-		title: string;
-		date: string;
-		desc: string;
-		cover?: string;
-	};
-	default: (payload: MockPayload, props: Record<string, unknown>, importObject: MockImport) => void;
+type Metadata = {
+	title: string;
+	date: string;
+	desc: string;
+	cover?: string;
 };
 
 export const load: PageServerLoad = async ({ params }) => {
@@ -28,36 +16,25 @@ export const load: PageServerLoad = async ({ params }) => {
 	const filePath = join(postsDirectory, `${params.slug}.md`);
 
 	const fileContent = await readFile(filePath, 'utf-8');
-	const post: PostModule = {
-		metadata: JSON.parse(fileContent.split('---')[1]),
-		default: new Function('payload', 'props', 'importObject', fileContent.split('---')[2]) as any
-	};
+	const [, frontmatter, content] = fileContent.split('---');
 
-	const { title, date, desc, cover } = post.metadata;
+	try {
+		const metadata = yamlLoad(frontmatter.trim()) as Metadata;
+		const { title, date, desc, cover } = metadata;
 
-	const mockPayload: MockPayload = {
-		out: '',
-		push_element: (payload: MockPayload, tag: string, line: number, col: number) => {
-			if (tag === 'h2' || tag === 'h3') {
-				const id = payload.out.split('>').pop()?.toLowerCase().replace(/\W+/g, '-') || '';
-				payload.out += `id="${id}" `;
-			}
-		},
-		pop_element: () => {}
-	};
+		// Parse the markdown content
+		const htmlContent = marked(content.trim());
 
-	const mockImport: MockImport = {
-		push: () => {},
-		pop: () => {}
-	};
-
-	post.default(mockPayload, {}, mockImport);
-
-	return {
-		title,
-		date,
-		desc,
-		content: mockPayload.out,
-		cover
-	};
+		return {
+			title,
+			date,
+			desc,
+			content: htmlContent,
+			cover
+		};
+	} catch (error) {
+		console.error('Error parsing frontmatter:', error);
+		console.log('Frontmatter content:', frontmatter);
+		throw error;
+	}
 };

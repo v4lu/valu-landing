@@ -23,6 +23,9 @@ importers:
       lucide-svelte:
         specifier: ^0.417.0
         version: 0.417.0(svelte@5.0.0-next.246)
+      marked:
+        specifier: ^14.1.2
+        version: 14.1.2
       mdsvex:
         specifier: ^0.12.3
         version: 0.12.3(svelte@5.0.0-next.246)
@@ -1823,6 +1826,11 @@ packages:
   make-dir@3.1.0:
     resolution: {integrity: sha512-g3FeP20LNwhALb/6Cz6Dd4F2ngze0jz7tbzrD2wAV+o9FeNHe4rL+yK2md0J/fiSf1sa1ADhXqi5+oVwOM/eGw==}
     engines: {node: '>=8'}
+
+  marked@14.1.2:
+    resolution: {integrity: sha512-f3r0yqpz31VXiDB/wj9GaOB0a2PRLQl6vJmXiFrniNwjkKdvakqJRULhjFKJpxOchlCRiG5fcacoUZY5Xa6PEQ==}
+    engines: {node: '>= 18'}
+    hasBin: true
 
   mdast-util-from-markdown@0.8.5:
     resolution: {integrity: sha512-2hkTXtYYnr+NubD/g6KGBS/0mFmBcifAsI0yIWRiRo0PjVs6SSOSOdtzbp6kSGnShDN6G5aWZpKQ2lWRy27mWQ==}
@@ -4597,6 +4605,8 @@ snapshots:
   make-dir@3.1.0:
     dependencies:
       semver: 6.3.1
+
+  marked@14.1.2: {}
 
   mdast-util-from-markdown@0.8.5:
     dependencies:
