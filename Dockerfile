@@ -6,7 +6,6 @@ COPY package.json pnpm-lock.yaml* ./
 RUN pnpm install --no-frozen-lockfile
 COPY . .
 RUN pnpm run build
-RUN ls -la /app
 
 # Stage 2: Runtime stage
 FROM node:20-alpine
@@ -14,10 +13,8 @@ RUN npm install -g pnpm
 WORKDIR /app
 COPY --from=builder /app/package.json /app/pnpm-lock.yaml* ./
 COPY --from=builder /app/build ./build
-COPY --from=builder /app/src ./src
+COPY --from=builder /app/src/blogs ./build/src/blogs
 RUN pnpm install --prod --no-frozen-lockfile
-
-RUN mkdir -p /app/build/src && cp -r /app/src/blogs /app/build/src/
 
 EXPOSE 3000
 ENV NODE_ENV=production
