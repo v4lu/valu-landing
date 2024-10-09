@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
 import type { PageServerLoad } from './$types';
 
 type MockPayload = {
@@ -22,7 +24,15 @@ type PostModule = {
 };
 
 export const load: PageServerLoad = async ({ params }) => {
-	const post: PostModule = await import(`../../../blogs/${params.slug}.md`);
+	const postsDirectory = join(process.cwd(), 'build', 'src', 'blogs');
+	const filePath = join(postsDirectory, `${params.slug}.md`);
+
+	const fileContent = await readFile(filePath, 'utf-8');
+	const post: PostModule = {
+		metadata: JSON.parse(fileContent.split('---')[1]),
+		default: new Function('payload', 'props', 'importObject', fileContent.split('---')[2]) as any
+	};
+
 	const { title, date, desc, cover } = post.metadata;
 
 	const mockPayload: MockPayload = {
