@@ -2,7 +2,7 @@
 title: Nuxt Docker Build
 date: '22.09.2024'
 desc: 'Short tutorial about creating Docker Nuxt containers'
-cover: '/cover/docker-nuxt-vite.webp'
+cover: '/cover/nuxt-cover.webp'
 ---
 
 # Intro

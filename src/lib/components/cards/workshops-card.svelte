@@ -1,12 +1,14 @@
 <script lang="ts">
+	import { cn } from '$lib/cn';
 	type FeatureCardProps = {
 		title: string;
 		desc: string;
 		date: string;
 		path: string;
 		coverImage: string;
+		class?: string;
 	};
-	let { title, desc, path, coverImage }: FeatureCardProps = $props();
+	let { title, desc, path, coverImage, class: className }: FeatureCardProps = $props();
 	let isHovering = $state(false);
 	let mouseX = $state(0);
 	let mouseY = $state(0);
@@ -34,7 +36,10 @@
 		onmouseenter={handleMouseEnter}
 		onmouseleave={handleMouseLeave}
 		onmousemove={handleMouseMove}
-		class="relative grid h-[15rem] transform-gpu place-items-start content-end gap-3 overflow-hidden rounded-xl border border-slate-800 bg-cover bg-center p-4 transition-all duration-300 ease-in-out hover:shadow-lg"
+		class={cn(
+			'relative h-full w-full transform-gpu overflow-hidden rounded-xl border border-slate-800 transition-all duration-300 ease-in-out hover:shadow-lg',
+			className
+		)}
 		style="--mouse-x: {mouseX}px; --mouse-y: {mouseY}px; --primary: 0 75% 59%;"
 	>
 		<div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{coverImage}');"></div>
@@ -50,11 +55,11 @@
 			<rect width="100%" height="100%" fill="url(#grid-48)" />
 		</svg>
 
-		<div class="relative z-10">
-			<h4 class="px-2 text-lg font-bold text-white">
+		<div class="absolute bottom-0 left-0 right-0 z-10 p-4">
+			<h4 class="line-clamp-2 text-lg font-bold text-white">
 				{title}
 			</h4>
-			<p class="px-2 pb-2 text-white/80">{desc}</p>
+			<p class="mt-1 line-clamp-2 text-sm text-white/80">{desc}</p>
 		</div>
 
 		{#if isHovering}

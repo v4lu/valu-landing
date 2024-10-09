@@ -3,20 +3,9 @@
 	import { Button } from '../ui/button';
 	import { Input } from '../ui/forms';
 
-	const currentYear = new Date().getFullYear();
+	const currentYear = $state(new Date().getFullYear());
 
-	const footerLinks = [
-		{ title: 'About', href: '/about' },
-		{ title: 'Services', href: '/services' },
-		{ title: 'Contact', href: '/contact' },
-		{ title: 'Terms', href: '/terms' },
-		{ title: 'Privacy', href: '/privacy' },
-		{ title: 'Blog', href: '/blog' },
-		{ title: 'Careers', href: '/careers' },
-		{ title: 'FAQ', href: '/faq' }
-	];
-
-	const socialLinks = [
+	const socialLinks = $state([
 		{
 			name: 'Twitter',
 			href: '#',
@@ -32,7 +21,7 @@
 			href: '#',
 			icon: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z'
 		}
-	];
+	]);
 </script>
 
 <footer class="relative mt-24 border-t border-white/10 bg-[rgba(3,0,20,0.08)] backdrop-blur-[12px]">
@@ -42,16 +31,7 @@
 			<div class="mb-8 lg:mb-0">
 				<Icons.Logo />
 			</div>
-			<div class="grid grid-cols-2 gap-x-8 gap-y-2 sm:grid-cols-4 lg:mx-4">
-				{#each footerLinks as link}
-					<a
-						href={link.href}
-						class="text-sm text-muted-foreground transition-colors hover:text-white hover:underline hover:underline-offset-4"
-					>
-						{link.title}
-					</a>
-				{/each}
-			</div>
+
 			<div class="mt-8 w-full md:w-fit lg:mt-0">
 				<h2 class="mb-4 text-sm font-semibold uppercase text-muted-foreground">Subscribe to our newsletter</h2>
 				<form class="flex w-full flex-col sm:flex-row">
@@ -62,7 +42,7 @@
 						type="email"
 						autocomplete="email"
 						required
-						class="sm:w-64"
+						class="h-fit sm:w-64"
 						placeholder="Enter your email"
 					/>
 					<div class="mt-4 sm:ml-4 sm:mt-0 sm:flex-shrink-0">

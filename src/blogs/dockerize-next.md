@@ -2,7 +2,7 @@
 title: Next.js Docker Build
 date: '22.09.2024'
 desc: 'Short tutorial about creating Docker Next.js containers'
-cover: '/cover/docker-nextjs-vite.webp'
+cover: '/cover/nextjs-cover.webp'
 ---
 
 # Intro

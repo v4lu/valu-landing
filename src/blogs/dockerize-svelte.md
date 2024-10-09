@@ -2,7 +2,7 @@
 title: Sveltekit Docker Build
 date: '22.09.2024'
 desc: 'Short tutorial about creating Docker Svelte containers'
-cover: '/cover/docker-sveltekit-vite.webp'
+cover: '/cover/svelte-cover.webp'
 ---
 
 # Intro

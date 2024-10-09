@@ -1,39 +1,89 @@
 <script lang="ts">
+	import { fly } from 'svelte/transition';
 	import { Loader2 } from 'lucide-svelte';
+	import Icon from '@iconify/svelte';
 	import { Button } from '../ui/button';
 	import { Input, Textarea } from '../ui/forms';
-	import { Icons } from '../icons';
 	import { TitleLayout } from '../ui/title-layout';
 
 	interface PlanFeature {
 		name: string;
 		desc: string;
+		icon: string;
 	}
 
-	const features: PlanFeature[] = [
+	const features: PlanFeature[] = $state([
 		{
-			name: 'Scalable',
-			desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text"
+			name: 'Innovative Solutions',
+			desc: 'We craft cutting-edge web applications using the latest technologies to deliver exceptional digital experiences.',
+			icon: 'mdi:lightbulb-on-outline'
 		},
 		{
-			name: 'Flexible',
-			desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text"
+			name: 'Scalable Architecture',
+			desc: 'Our robust systems grow with your business, handling increased loads without compromising performance.',
+			icon: 'mdi:scale-balance'
 		},
 		{
-			name: 'Smooth',
-			desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text"
+			name: 'Responsive Design',
+			desc: 'We ensure seamless user experiences across all devices - desktop, tablet, and mobile.',
+			icon: 'mdi:responsive'
 		},
 		{
-			name: 'Secure',
-			desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text"
+			name: 'Security-First Approach',
+			desc: "We implement best practices and cutting-edge measures to protect your data and users' information.",
+			icon: 'mdi:shield-check-outline'
+		},
+		{
+			name: 'Ongoing Support',
+			desc: 'We provide continuous support to keep your application up-to-date, secure, and optimized.',
+			icon: 'mdi:headphones'
 		}
-	];
+	]);
 
-	let firstName = '';
-	let lastName = '';
-	let email = '';
-	let message = '';
-	let pending = false;
+	let firstName = $state('');
+	let lastName = $state('');
+	let email = $state('');
+	let message = $state('');
+	let pending = $state(false);
+
+	let container: HTMLElement;
+	let titleVisible = $state(false);
+	let visibleFeatures = $state(features.map(() => false));
+	let formVisible = $state(false);
+
+	function handleScroll() {
+		if (container) {
+			const rect = container.getBoundingClientRect();
+			const triggerPoint = window.innerHeight * 0.8;
+
+			if (!titleVisible && rect.top < triggerPoint) {
+				titleVisible = true;
+			}
+
+			container.querySelectorAll('.feature-item').forEach((item, index) => {
+				if (!visibleFeatures[index]) {
+					const itemRect = item.getBoundingClientRect();
+					if (itemRect.top < triggerPoint) {
+						visibleFeatures[index] = true;
+						visibleFeatures = [...visibleFeatures];
+					}
+				}
+			});
+
+			if (!formVisible) {
+				const formRect = container.querySelector('.contact-form')?.getBoundingClientRect();
+				if (formRect && formRect.top < triggerPoint) {
+					formVisible = true;
+				}
+			}
+		}
+	}
+
+	$effect(() => {
+		setTimeout(() => {
+			handleScroll();
+		}, 100);
+	});
 
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
@@ -41,65 +91,83 @@
 	}
 </script>
 
-<section class="container py-14">
-	<TitleLayout
-		title="Get in touch with us for any inquiries"
-		subtitle="Fill out the form below and we'll get back to you as soon as possible."
-	/>
+<svelte:window on:scroll={handleScroll} on:resize={handleScroll} />
+
+<section bind:this={container} id="contact" class="container py-14">
+	<div class="title-container" style="min-height: 100px;">
+		{#if titleVisible}
+			<div in:fly={{ y: 50, duration: 800 }}>
+				<TitleLayout
+					title="Get in touch with us for any inquiries"
+					subtitle="Fill out the form below and we'll get back to you as soon as possible."
+				/>
+			</div>
+		{/if}
+	</div>
+
 	<div class="mt-16 grid gap-8 md:grid-cols-[45%,1fr]">
 		<ul class="max-w-md flex-1 space-y-10 px-4 md:px-0">
-			{#each features as item}
-				<li class="flex gap-x-3">
-					<div
-						class="flex h-12 w-12 flex-none items-center justify-center rounded-full border border-white/10 bg-transparent text-red-500 shadow-lg"
-					>
-						<Icons.Seo class="size-5" />
-					</div>
-					<div>
-						<h4 class="text-lg font-medium tracking-tight text-white">
-							{item.name}
-						</h4>
-						<p class="mt-2 text-gray-400 md:text-sm">{item.desc}</p>
-					</div>
+			{#each features as item, i}
+				<li class="feature-item">
+					{#if visibleFeatures[i]}
+						<div in:fly={{ y: 50, duration: 800, delay: i * 200 }} class="flex gap-x-3">
+							<div
+								class="flex h-12 w-12 flex-none items-center justify-center rounded-full border border-white/10 bg-transparent text-red-500 shadow-lg"
+							>
+								<Icon icon={item.icon} class="size-5" />
+							</div>
+							<div>
+								<h4 class="text-lg font-medium tracking-tight text-white">
+									{item.name}
+								</h4>
+								<p class="mt-2 text-gray-400 md:text-sm">{item.desc}</p>
+							</div>
+						</div>
+					{/if}
 				</li>
 			{/each}
 		</ul>
+
 		<div
-			class="mt-6 flex w-full transform-gpu flex-col bg-[rgba(3,0,20,0.08)] backdrop-blur-[12px] md:mt-0 md:rounded-xl md:border md:border-white/10 md:shadow-lg"
+			class="contact-form mt-6 flex w-full transform-gpu flex-col bg-[rgba(3,0,20,0.08)] backdrop-blur-[12px] md:mt-0 md:rounded-xl md:border md:border-white/10 md:shadow-lg"
 		>
-			<form on:submit={handleSubmit} class="flex h-full w-full flex-col gap-4 p-6">
-				<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-					<div class="space-y-2">
-						<label for="first-name" class="text-sm font-medium text-white">First Name</label>
-						<Input bind:value={firstName} id="first-name" placeholder="Enter your first name" required />
-					</div>
-					<div class="space-y-2">
-						<label for="last-name" class="text-sm font-medium text-white">Last Name</label>
-						<Input bind:value={lastName} id="last-name" placeholder="Enter your last name" />
-					</div>
+			{#if formVisible}
+				<div in:fly={{ y: 50, duration: 800 }}>
+					<form onsubmit={handleSubmit} class="flex h-full w-full flex-col gap-4 p-6">
+						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+							<div class="space-y-2">
+								<label for="first-name" class="text-sm font-medium text-white">First Name</label>
+								<Input bind:value={firstName} id="first-name" placeholder="Enter your first name" required />
+							</div>
+							<div class="space-y-2">
+								<label for="last-name" class="text-sm font-medium text-white">Last Name</label>
+								<Input bind:value={lastName} id="last-name" placeholder="Enter your last name" />
+							</div>
+						</div>
+						<div class="space-y-2">
+							<label for="email" class="text-sm font-medium text-white">Email</label>
+							<Input bind:value={email} id="email" type="email" placeholder="Enter your email" required />
+						</div>
+						<div class="h-[14rem] h-full space-y-2 pb-8">
+							<label for="message" class="text-sm font-medium text-white">Message</label>
+							<Textarea
+								bind:value={message}
+								id="message"
+								class="h-full resize-none"
+								placeholder="Enter your message"
+								required
+							/>
+						</div>
+						<Button type="submit" disabled={pending} class="h-12 w-full">
+							{#if pending}
+								<Loader2 class="mr-2 h-4 w-4 animate-spin" />
+							{:else}
+								Submit
+							{/if}
+						</Button>
+					</form>
 				</div>
-				<div class="space-y-2">
-					<label for="email" class="text-sm font-medium text-white">Email</label>
-					<Input bind:value={email} id="email" type="email" placeholder="Enter your email" required />
-				</div>
-				<div class="h-full space-y-2 pb-8">
-					<label for="message" class="text-sm font-medium text-white">Message</label>
-					<Textarea
-						bind:value={message}
-						id="message"
-						class="h-full resize-none"
-						placeholder="Enter your message"
-						required
-					/>
-				</div>
-				<Button type="submit" disabled={pending} class="w-full">
-					{#if pending}
-						<Loader2 class="mr-2 h-4 w-4 animate-spin" />
-					{:else}
-						Submit
-					{/if}
-				</Button>
-			</form>
+			{/if}
 		</div>
 	</div>
 </section>

@@ -9,10 +9,10 @@
 	import 'prismjs/components/prism-kotlin';
 	import 'prismjs/components/prism-markup';
 	import 'prismjs/components/prism-typescript';
-
+	import 'prismjs/components/prism-jsx.js';
+	import 'prism-svelte';
 	import 'prismjs/themes/prism-okaidia.css';
 
-	// Add more languages as needed
 	let { data } = $props();
 	type TocType = {
 		id: string;
@@ -86,6 +86,7 @@
 			<p class="w-full text-right italic text-muted-foreground">Published on {data.date}</p>
 		</header>
 		<div class="content">
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 			{@html data.content}
 		</div>
 	</article>
@@ -156,10 +157,10 @@
 	}
 
 	:global(.content pre) {
-		@apply my-4 overflow-x-auto rounded-lg border border-white/10 bg-slate-900/20 p-4; /* Adjusted for Prism Okaidia theme */
+		@apply my-4 overflow-x-auto rounded-lg border border-white/10 bg-slate-900/20 p-4;
 	}
 	:global(.content code) {
-		@apply rounded px-1 py-0.5 font-mono text-sm; /* Adjusted for Prism Okaidia theme */
+		@apply rounded px-1 py-0.5 font-mono text-sm;
 	}
 
 	:global(.content a) {

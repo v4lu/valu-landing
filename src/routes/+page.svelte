@@ -5,9 +5,11 @@
 		HeroHeader,
 		HeroPattern,
 		NewsletterSection,
-		OfferingSection,
-		TestimonialSection
+		TestimonialSection,
+		WorkshopsSection
 	} from '$lib/components/landing';
+
+	let { data } = $props();
 </script>
 
 <main>
@@ -18,7 +20,7 @@
 	</HeroPattern>
 	<AboutSection />
 	<!-- <ProjectsSection /> -->
-	<OfferingSection />
+	<WorkshopsSection items={data.posts} />
 	<ContactSection />
 	<TestimonialSection />
 	<NewsletterSection />

@@ -26,6 +26,9 @@ importers:
       mini-svg-data-uri:
         specifier: ^1.4.4
         version: 1.4.4
+      prism-svelte:
+        specifier: ^0.5.0
+        version: 0.5.0
       prismjs:
         specifier: ^1.29.0
         version: 1.29.0
@@ -39,6 +42,9 @@ importers:
       '@huntabyte/eslint-config':
         specifier: ^0.3.2
         version: 0.3.2(@typescript-eslint/utils@8.5.0(eslint@9.10.0(jiti@1.21.6))(typescript@5.6.2))(@vue/compiler-sfc@3.5.5)(eslint-plugin-svelte@2.44.0(eslint@9.10.0(jiti@1.21.6))(svelte@5.0.0-next.246))(eslint@9.10.0(jiti@1.21.6))(svelte@5.0.0-next.246)(typescript@5.6.2)(vitest@2.1.1(@types/node@22.5.4))
+      '@iconify/svelte':
+        specifier: ^4.0.2
+        version: 4.0.2(svelte@5.0.0-next.246)
       '@playwright/test':
         specifier: ^1.28.1
         version: 1.47.1
@@ -411,6 +417,14 @@ packages:
     resolution: {integrity: sha512-u2TIbkMD8R+eke49PofIfu/hI542ZiLTynNVTtKkhIh1vmQiIPzcnVdVjuZ/aNvjIjpH9FnowyY2Xd+i4llqLQ==}
     peerDependencies:
       eslint: '*'
+
+  '@iconify/svelte@4.0.2':
+    resolution: {integrity: sha512-6BSrU85FzGfhQD3bTXpnkCCvBAglEt8T9QednVnXAYm4C+d3464y+pYMzhQNJm5mPId2cuiw+2wXlDflXllHDw==}
+    peerDependencies:
+      svelte: '>4.0.0'
+
+  '@iconify/types@2.0.0':
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -2143,6 +2157,9 @@ packages:
   prism-svelte@0.4.7:
     resolution: {integrity: sha512-yABh19CYbM24V7aS7TuPYRNMqthxwbvx6FF/Rw920YbyBWO3tnyPIqRMgHuSVsLmuHkkBS1Akyof463FVdkeDQ==}
 
+  prism-svelte@0.5.0:
+    resolution: {integrity: sha512-db91Bf3pRGKDPz1lAqLFSJXeW13mulUJxhycysFpfXV5MIK7RgWWK2E5aPAa71s8TCzQUXxF5JOV42/iOs6QkA==}
+
   prismjs@1.29.0:
     resolution: {integrity: sha512-Kx/1w86q/epKcmte75LNrEoT+lX8pBpavuAbvJWRXar7Hz8jrtF+e3vY751p0R8H9HdArwaCTNDDzHg/ScJK1Q==}
     engines: {node: '>=6'}
@@ -3001,6 +3018,13 @@ snapshots:
   '@huntabyte/eslint-plugin@0.1.0(eslint@9.10.0(jiti@1.21.6))':
     dependencies:
       eslint: 9.10.0(jiti@1.21.6)
+
+  '@iconify/svelte@4.0.2(svelte@5.0.0-next.246)':
+    dependencies:
+      '@iconify/types': 2.0.0
+      svelte: 5.0.0-next.246
+
+  '@iconify/types@2.0.0': {}
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -4759,6 +4783,8 @@ snapshots:
   prettier@3.3.3: {}
 
   prism-svelte@0.4.7: {}
+
+  prism-svelte@0.5.0: {}
 
   prismjs@1.29.0: {}
 

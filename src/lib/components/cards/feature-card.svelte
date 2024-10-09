@@ -48,7 +48,7 @@
 	<div
 		class="w-fit transform-gpu rounded-full p-4 [border:1px_solid_rgba(255,255,255,.1)] [box-shadow:0_-20px_80px_-20px_#ff97971f_inset]"
 	>
-		<svelte:component this={Icon} class="size-6 text-primary" />
+		<Icon class="size-6 text-primary" />
 	</div>
 	<h4 class="px-2 text-lg font-bold">
 		{title}
