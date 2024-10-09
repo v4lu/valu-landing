@@ -14,7 +14,7 @@ In the world of modern web development, choosing the right framework is crucial.
 Let's start by comparing the Docker image sizes for a basic "Hello World" application in each framework:
 
 | Framework | Image Size |
-| --------- | ---------- |
+|-----------|------------|
 | SvelteKit | ~80MB      |
 | Next.js   | ~350MB     |
 | Nuxt.js   | ~300MB     |
