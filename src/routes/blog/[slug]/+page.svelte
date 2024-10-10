@@ -69,8 +69,8 @@
 <svelte:head>
 	<title>Valu Media - {data.title}</title>
 </svelte:head>
-<main class="container mx-auto mt-40 flex w-full">
-	<article class="prose prose-invert mx-auto flex-grow lg:prose-xl">
+<main class="xl:-full container mx-auto mt-40 flex w-full flex-col xl:flex-row">
+	<article class="mx-auto w-full max-w-3xl px-4 xl:px-0">
 		<header class="mb-8">
 			<h1
 				class="mb-4 bg-gradient-to-b from-foreground to-muted-foreground bg-clip-text text-4xl font-bold text-transparent sm:text-5xl"
@@ -88,7 +88,7 @@
 			{/if}
 			<p class="w-full text-right italic text-muted-foreground">Published on {data.date}</p>
 		</header>
-		<div class="content">
+		<div class="content prose prose-invert max-w-none lg:prose-xl">
 			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 			{@html data.content}
 		</div>
@@ -118,12 +118,12 @@
 </main>
 
 <style lang="postcss">
-	@media (min-width: 1280px) {
-		:global(.content p),
-		:global(.content ul),
-		:global(.content ol) {
-			@apply mx-auto;
-		}
+	:global(.content) {
+		@apply text-base text-foreground/80 lg:text-lg;
+	}
+
+	:global(.content > *) {
+		@apply mx-auto max-w-full;
 	}
 
 	:global(.content h1) {
@@ -139,7 +139,7 @@
 	}
 
 	:global(.content p) {
-		@apply mb-4 text-foreground/80;
+		@apply mb-4;
 	}
 
 	:global(.content ul),
@@ -162,6 +162,7 @@
 	:global(.content pre) {
 		@apply my-4 overflow-x-auto rounded-lg border border-white/10 bg-slate-900/20 p-4;
 	}
+
 	:global(.content code) {
 		@apply rounded px-1 py-0.5 font-mono text-sm;
 	}
