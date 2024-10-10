@@ -22,6 +22,9 @@
 			<HeroHeader />
 		</section>
 	</HeroPattern>
+	<section class="container grid gap-10 pt-24 lg:grid-cols-[1fr,20%] lg:pt-[220px]">
+		<HeroHeader />
+	</section>
 	<AboutSection />
 	<!-- <ProjectsSection /> -->
 	<WorkshopsSection items={data.posts} />

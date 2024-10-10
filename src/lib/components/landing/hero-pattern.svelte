@@ -29,7 +29,7 @@
 	});
 </script>
 
-<div class="relative min-h-[70vh] w-full flex-1 overflow-hidden lg:min-h-[80vh]">
+<div class="relative hidden min-h-[70vh] w-full flex-1 overflow-hidden md:block lg:min-h-[80vh]">
 	<div class="absolute inset-x-0 -top-0 opacity-30">
 		<div class="absolute inset-0 mx-auto h-[27rem] max-w-lg sm:h-64">
 			<svg
