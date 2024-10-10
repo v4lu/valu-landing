@@ -1,25 +1,11 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import gsap from 'gsap';
 	import { Button } from '../ui/button';
 	import { Heading } from '../ui/heading';
 	import { scrollToSection } from '$lib/cn';
-
-	let container: HTMLElement;
-
-	onMount(() => {
-		const timeline = gsap.timeline({ defaults: { opacity: 0, y: 50 } });
-
-		timeline
-			.from(container, { duration: 0.5, opacity: 0 })
-			.from('.hero-heading', { duration: 0.5 })
-			.from('.hero-description', { duration: 0.5 }, '-=0.2')
-			.from('.hero-button', { duration: 0.5 }, '-=0.2');
-	});
 </script>
 
-<div class="overflow-hidden" bind:this={container}>
-	<div class="transform-gpu py-12">
+<div class="overflow-hidden">
+	<div class="hero-container transform-gpu py-12">
 		<div class="hero-heading">
 			<Heading size="hero">Let us build great product for you!</Heading>
 		</div>
@@ -43,3 +29,35 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.hero-container {
+		animation: fadeInUp 0.5s ease-out forwards;
+	}
+
+	.hero-heading {
+		opacity: 0;
+		animation: fadeInUp 0.5s ease-out 0.2s forwards;
+	}
+
+	.hero-description {
+		opacity: 0;
+		animation: fadeInUp 0.5s ease-out 0.4s forwards;
+	}
+
+	.hero-button {
+		opacity: 0;
+		animation: fadeInUp 0.5s ease-out 0.6s forwards;
+	}
+</style>
