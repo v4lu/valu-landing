@@ -6,3 +6,4 @@ export { default as ProjectsSection } from './projects-section.svelte';
 export { default as ContactSection } from './contact-section.svelte';
 export { default as WorkshopsSection } from './workshops-section.svelte';
 export { default as TestimonialSection } from './testimonial-section.svelte';
+export { default as HeroPatternMobile } from './hero-pattern-mobile.svelte'
