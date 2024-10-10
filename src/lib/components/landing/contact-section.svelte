@@ -131,9 +131,11 @@
 		</ul>
 
 		<div
+			class:opacity-0={!formVisible}
+			class:translate-y-8={!formVisible}
 			class="contact-form mt-6 flex h-full w-full transform-gpu flex-col rounded-xl border border-white/10 bg-[rgba(3,0,20,0.08)] shadow-lg backdrop-blur-[12px] md:mt-0"
 		>
-			<div class:opacity-0={!formVisible} class:translate-y-8={!formVisible} class="duration-800 h-full transition-all">
+			<div class="duration-800 h-full transition-all">
 				<form onsubmit={handleSubmit} class="flex h-full w-full flex-1 flex-col justify-between gap-4 p-4 md:p-6">
 					<div class="flex flex-1 flex-col gap-6">
 						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -155,7 +157,7 @@
 							<Textarea
 								bind:value={message}
 								id="message"
-								class="h-32 resize-none md:h-full"
+								class="h-40 resize-none md:h-full"
 								placeholder="Enter your message"
 								required
 							/>
