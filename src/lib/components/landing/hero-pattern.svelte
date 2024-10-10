@@ -7,7 +7,6 @@
 
 	let gradientElement: SVGRectElement;
 	let gridElement: SVGSVGElement;
-	let shapeElement: HTMLDivElement;
 	let boxElements: SVGPathElement[] = [];
 
 	onMount(() => {
@@ -48,23 +47,6 @@
 					});
 				}
 			});
-		});
-
-		// Slower floating animation for shape
-		gsap.to(shapeElement, {
-			duration: 10,
-			y: -20,
-			yoyo: true,
-			repeat: -1,
-			ease: 'sine.inOut'
-		});
-
-		// Slower rotation for shape
-		gsap.to(shapeElement, {
-			duration: 40,
-			rotation: 360,
-			repeat: -1,
-			ease: 'none'
 		});
 	});
 </script>
@@ -135,7 +117,6 @@
 	</svg>
 
 	<div
-		bind:this={shapeElement}
 		class="absolute left-[calc(50%-4rem)] top-10 -z-10 transform-gpu blur-3xl sm:left-[calc(50%-18rem)] lg:left-48 lg:top-[calc(50%-30rem)] xl:left-[calc(50%-24rem)]"
 		aria-hidden="true"
 	>

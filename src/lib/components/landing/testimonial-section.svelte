@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
-	import { ChevronLeft, ChevronRight } from 'lucide-svelte';
 	import { TestimonialCard } from '../cards';
 	import { TitleLayout } from '../ui/title-layout';
-	import { Button } from '../ui/button';
 
 	interface Author {
 		name: string;
@@ -105,13 +103,6 @@
 		}
 	}
 
-	function scrollHorizontally(direction: 'left' | 'right') {
-		if (scrollContainer) {
-			const scrollAmount = direction === 'left' ? -300 : 300;
-			scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-		}
-	}
-
 	$effect(() => {
 		setTimeout(() => {
 			handleScroll();
@@ -188,18 +179,6 @@
 					{/each}
 				</ul>
 			</div>
-			<Button
-				onclick={() => scrollHorizontally('left')}
-				class="absolute left-0 top-1/2 -translate-y-1/2 rounded-full bg-gray-800/50 p-2"
-			>
-				<ChevronLeft size={24} />
-			</Button>
-			<Button
-				onclick={() => scrollHorizontally('right')}
-				class="absolute right-0 top-1/2 -translate-y-1/2 rounded-full bg-gray-800/50 p-2"
-			>
-				<ChevronRight size={24} />
-			</Button>
 		</div>
 	</div>
 </section>
