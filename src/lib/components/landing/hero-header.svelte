@@ -5,7 +5,7 @@
 	import { scrollToSection } from '$lib/cn';
 </script>
 
-<div class="hidden overflow-hidden md:block">
+<div class="overflow-hidden">
 	<div class="transform-gpu py-12">
 		<div in:fade={{ duration: 300, delay: 300 }}>
 			<Heading size="hero">Let us build great product for you!</Heading>
