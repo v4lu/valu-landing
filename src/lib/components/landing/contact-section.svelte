@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition';
 	import { Loader2 } from 'lucide-svelte';
 	import Icon from '@iconify/svelte';
 	import { Button } from '../ui/button';
@@ -95,22 +94,25 @@
 
 <section bind:this={container} id="contact" class="container py-8 md:py-14">
 	<div class="title-container" style="min-height: 100px;">
-		{#if titleVisible}
-			<div in:fly={{ y: 50, duration: 800 }}>
-				<TitleLayout
-					title="Get in touch with us"
-					subtitle="Fill out the form below and we'll get back to you as soon as possible."
-				/>
-			</div>
-		{/if}
+		<div class:opacity-0={!titleVisible} class:translate-y-8={!titleVisible} class="duration-800 transition-all">
+			<TitleLayout
+				title="Get in touch with us"
+				subtitle="Fill out the form below and we'll get back to you as soon as possible."
+			/>
+		</div>
 	</div>
 
 	<div class="mt-8 grid gap-8 md:mt-16 md:grid-cols-[45%,1fr]">
 		<ul class="max-w-md flex-1 space-y-6 px-2 md:space-y-10 md:px-0">
 			{#each features as item, i}
 				<li class="feature-item">
-					{#if visibleFeatures[i]}
-						<div in:fly={{ y: 50, duration: 800, delay: i * 200 }} class="flex gap-x-3">
+					<div
+						class:opacity-0={!visibleFeatures[i]}
+						class:translate-y-8={!visibleFeatures[i]}
+						class="duration-800 transition-all"
+						style="transition-delay: {i * 200}ms"
+					>
+						<div class="flex gap-x-3">
 							<div
 								class="flex h-10 w-10 flex-none items-center justify-center rounded-full border border-white/10 bg-transparent text-red-500 shadow-lg md:h-12 md:w-12"
 							>
@@ -123,7 +125,7 @@
 								<p class="mt-1 text-sm text-gray-400 md:mt-2 md:text-base">{item.desc}</p>
 							</div>
 						</div>
-					{/if}
+					</div>
 				</li>
 			{/each}
 		</ul>
@@ -131,45 +133,43 @@
 		<div
 			class="contact-form mt-6 flex h-full w-full transform-gpu flex-col rounded-xl border border-white/10 bg-[rgba(3,0,20,0.08)] shadow-lg backdrop-blur-[12px] md:mt-0"
 		>
-			{#if formVisible}
-				<div class="h-full" in:fly={{ y: 50, duration: 800 }}>
-					<form onsubmit={handleSubmit} class="flex h-full w-full flex-1 flex-col justify-between gap-4 p-4 md:p-6">
-						<div class="flex flex-1 flex-col gap-6">
-							<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-								<div class="space-y-3">
-									<label for="first-name" class=" font-medium text-white">First Name</label>
-									<Input bind:value={firstName} id="first-name" placeholder="Enter your first name" required />
-								</div>
-								<div class="space-y-3">
-									<label for="last-name" class="font-medium text-white">Last Name</label>
-									<Input bind:value={lastName} id="last-name" placeholder="Enter your last name" />
-								</div>
+			<div class:opacity-0={!formVisible} class:translate-y-8={!formVisible} class="duration-800 h-full transition-all">
+				<form onsubmit={handleSubmit} class="flex h-full w-full flex-1 flex-col justify-between gap-4 p-4 md:p-6">
+					<div class="flex flex-1 flex-col gap-6">
+						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+							<div class="space-y-3">
+								<label for="first-name" class=" font-medium text-white">First Name</label>
+								<Input bind:value={firstName} id="first-name" placeholder="Enter your first name" required />
 							</div>
 							<div class="space-y-3">
-								<label for="email" class="font-medium text-white">Email</label>
-								<Input bind:value={email} id="email" type="email" placeholder="Enter your email" required />
-							</div>
-							<div class=" flex-1 space-y-3">
-								<label for="message" class="font-medium text-white">Message</label>
-								<Textarea
-									bind:value={message}
-									id="message"
-									class="h-32 resize-none md:h-full"
-									placeholder="Enter your message"
-									required
-								/>
+								<label for="last-name" class="font-medium text-white">Last Name</label>
+								<Input bind:value={lastName} id="last-name" placeholder="Enter your last name" />
 							</div>
 						</div>
-						<Button type="submit" disabled={pending} class="h-12 w-full md:mt-12">
-							{#if pending}
-								<Loader2 class="mr-2 h-4 w-4 animate-spin" />
-							{:else}
-								Submit
-							{/if}
-						</Button>
-					</form>
-				</div>
-			{/if}
+						<div class="space-y-3">
+							<label for="email" class="font-medium text-white">Email</label>
+							<Input bind:value={email} id="email" type="email" placeholder="Enter your email" required />
+						</div>
+						<div class=" flex-1 space-y-3">
+							<label for="message" class="font-medium text-white">Message</label>
+							<Textarea
+								bind:value={message}
+								id="message"
+								class="h-32 resize-none md:h-full"
+								placeholder="Enter your message"
+								required
+							/>
+						</div>
+					</div>
+					<Button type="submit" disabled={pending} class="h-12 w-full md:mt-12">
+						{#if pending}
+							<Loader2 class="mr-2 h-4 w-4 animate-spin" />
+						{:else}
+							Submit
+						{/if}
+					</Button>
+				</form>
+			</div>
 		</div>
 	</div>
 </section>

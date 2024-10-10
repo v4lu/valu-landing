@@ -7,49 +7,25 @@
 
 	let gradientElement = $state<SVGRectElement>();
 	let gridElement = $state<SVGSVGElement>();
-	let boxElements = $state<SVGPathElement[]>([]);
 
 	onMount(() => {
-		if (!gradientElement) return;
-		// Gradient animation (unchanged)
-		gsap.to(gradientElement, {
-			duration: 5,
-			opacity: 0.5,
-			yoyo: true,
-			repeat: -1,
-			ease: 'sine.inOut'
-		});
-
-		if (!gridElement) return;
-		// Grid fade-in
-		gsap.from(gridElement, {
-			duration: 2,
-			opacity: 0,
-			ease: 'power2.inOut'
-		});
-
-		// Glitch effect for each box
-		boxElements.forEach((box, index) => {
-			gsap.to(box, {
-				duration: 0.1,
-				skewX: 'random(-5, 5)',
-				skewY: 'random(-5, 5)',
-				opacity: 'random(0.3, 1)',
-				repeat: 10,
+		if (gradientElement) {
+			gsap.to(gradientElement, {
+				duration: 5,
+				opacity: 0.5,
 				yoyo: true,
-				ease: 'power1.inOut',
-				delay: index * 0.2, // Stagger the start of each box's animation
-				onComplete: () => {
-					gsap.to(box, {
-						duration: 0.5,
-						skewX: 0,
-						skewY: 0,
-						opacity: 1,
-						ease: 'power2.out'
-					});
-				}
+				repeat: -1,
+				ease: 'sine.inOut'
 			});
-		});
+		}
+
+		if (gridElement) {
+			gsap.from(gridElement, {
+				duration: 1,
+				opacity: 0,
+				ease: 'power2.inOut'
+			});
+		}
 	});
 </script>
 
@@ -84,38 +60,11 @@
 		style="mask-image: radial-gradient(100% 100% at top left, white, transparent);"
 	>
 		<defs>
-			<pattern
-				class="hidden md:block"
-				id="983e3e4c-de6d-4c3f-8d64-b9761d1534cc"
-				width="200"
-				height="200"
-				x="50%"
-				y="-1"
-				patternUnits="userSpaceOnUse"
-			>
+			<pattern id="grid-pattern" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
 				<path d="M.5 200V.5H200" fill="none" />
 			</pattern>
-			<pattern
-				class="md:hidden"
-				id="983e3e4c-de6d-4c3f-8d64-b9761d1534cc"
-				width="100"
-				height="100"
-				x="50%"
-				y="-1"
-				patternUnits="userSpaceOnUse"
-			>
-				<path d="M.5 120V.5H120" fill="none" />
-			</pattern>
 		</defs>
-		<svg x="50%" y="-1" class="overflow-visible fill-red-800/5">
-			<path bind:this={boxElements[0]} d="M-200 0h201v201h-201Z" stroke-width="1" />
-			<path bind:this={boxElements[1]} d="M600 0h201v201h-201Z" stroke-width="1" />
-			<path bind:this={boxElements[2]} d="M-400 600h201v201h-201Z" stroke-width="1" />
-			<path bind:this={boxElements[3]} d="M200 800h201v201h-201Z" stroke-width="1" />
-			<path bind:this={boxElements[4]} d="M0 400h201v201h-201Z" stroke-width="1" />
-			<path bind:this={boxElements[5]} d="M400 200h201v201h-201Z" stroke-width="1" />
-		</svg>
-		<rect width="100%" height="100%" stroke-width="0" fill="url(#983e3e4c-de6d-4c3f-8d64-b9761d1534cc)" />
+		<rect width="100%" height="100%" stroke-width="0" fill="url(#grid-pattern)" />
 	</svg>
 
 	<div
