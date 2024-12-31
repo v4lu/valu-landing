@@ -9,6 +9,7 @@
 		TestimonialSection,
 		WorkshopsSection
 	} from '$lib/components/landing';
+	import ProjectsSection from '$lib/components/landing/projects-section.svelte';
 
 	let { data } = $props();
 </script>
@@ -29,6 +30,7 @@
 		</section>
 	</HeroPatternMobile>
 	<AboutSection />
+	<ProjectsSection />
 	<!-- <ProjectsSection /> -->
 	<WorkshopsSection items={data.posts} />
 	<ContactSection />

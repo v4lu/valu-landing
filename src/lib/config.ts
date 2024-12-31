@@ -32,3 +32,39 @@ export const features = [
 		desc: 'Craft intuitive and visually appealing user interfaces to enhance user engagement and satisfaction.'
 	}
 ];
+
+type Project = {
+	image: string;
+	title: string;
+	description: string;
+	link: string;
+};
+
+export const projects: Project[] = [
+	{
+		title: 'Vemeet Vegan Social Media',
+		description:
+			'Connect with fellow vegans and discover new plant-based recipes,restraunts, be part of the vegan community.',
+		image: './projects/vemeet.webp',
+		link: 'https://vemeet.me'
+	},
+	{
+		title: 'Developer Portfolio',
+		description: 'Personal portfolio website showcasing projects, skills, and experience.',
+		image: './projects/portfolio.webp',
+		link: 'https://lukabrx.dev'
+	},
+	{
+		title: 'TBD Issue Automation Tool',
+		description:
+			'Currently in development, tool which alows users to be more productive by automating repetitive tasks.',
+		image: './projects/project.webp',
+		link: 'https://app.valu-media.com'
+	},
+	{
+		title: 'Elysian Eden Vegan Blog',
+		description: 'Persoonal blog about veganism, plant-based recipes, and vegan lifestyle.',
+		link: 'https://elysianeden.de',
+		image: './projects/ee.webp'
+	}
+];

@@ -1,109 +1,135 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { fly } from 'svelte/transition';
 	import { ArrowLeft, ArrowRight } from 'lucide-svelte';
 	import { TitleLayout } from '../ui/title-layout';
 	import { ProjectCard } from '../cards';
-
-	interface Project {
-		title: string;
-		description: string;
-		image: string;
-	}
-
-	const projects: Project[] = [
-		{
-			title: 'AI-Powered Analytics Dashboard',
-			description: 'Real-time data visualization with machine learning insights for business intelligence.',
-			image: 'https://via.placeholder.com/510x286.png?text=AI+Analytics+Dashboard'
-		},
-		{
-			title: 'Blockchain-based Supply Chain',
-			description: 'Transparent and secure supply chain management using blockchain technology.',
-			image: 'https://via.placeholder.com/510x286.png?text=Blockchain+Supply+Chain'
-		},
-		{
-			title: 'AR Product Visualization',
-			description: 'Augmented reality app for visualizing products in real-world environments.',
-			image: 'https://via.placeholder.com/510x286.png?text=AR+Product+Viz'
-		},
-		{
-			title: 'IoT Smart Home Hub',
-			description: 'Central control system for managing various smart home devices and automations.',
-			image: 'https://via.placeholder.com/510x286.png?text=IoT+Smart+Home'
-		},
-		{
-			title: 'Neural Network Music Composer',
-			description: 'AI-powered application that generates original music compositions.',
-			image: 'https://via.placeholder.com/510x286.png?text=AI+Music+Composer'
-		}
-	];
+	import { projects } from '$lib/config';
 
 	let scrollContainer: HTMLElement;
-	let isInView = false;
-	let hasAnimated = false;
+	let container: HTMLElement;
+	let isInView = $state(false);
+	let hasAnimated = $state(false);
+	let canScrollLeft = $state(false);
+	let canScrollRight = $state(false);
+	let isMobile = $state(false);
 
-	function handleScroll(scrollOffset: number) {
-		if (scrollContainer) {
-			const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-			const newScrollLeft = scrollContainer.scrollLeft + scrollOffset;
-			scrollContainer.scrollTo({
-				left: Math.max(0, Math.min(maxScrollLeft, newScrollLeft)),
-				behavior: 'smooth'
-			});
+	function checkScrollButtons() {
+		if (!scrollContainer) return;
+		canScrollLeft = scrollContainer.scrollLeft > 0;
+		canScrollRight = scrollContainer.scrollLeft < scrollContainer.scrollWidth - scrollContainer.clientWidth;
+	}
+
+	function handleScroll(direction: 'left' | 'right') {
+		if (!scrollContainer) return;
+		const scrollAmount = isMobile ? 320 : 650;
+		const targetScroll = scrollContainer.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+
+		scrollContainer.scrollTo({
+			left: targetScroll,
+			behavior: 'smooth'
+		});
+	}
+
+	function checkVisibility() {
+		if (!container || hasAnimated) return;
+		const rect = container.getBoundingClientRect();
+		const triggerPoint = window.innerHeight * 0.8;
+
+		if (rect.top < triggerPoint) {
+			isInView = true;
+			hasAnimated = true;
 		}
 	}
 
 	function handleResize() {
-		const viewport = document.getElementById('projects-section');
-		if (viewport && !hasAnimated) {
-			const rect = viewport.getBoundingClientRect();
-			const triggerPoint = viewport.offsetHeight * 0.5;
-			isInView = rect.top < window.innerHeight - triggerPoint && rect.bottom >= 0;
-			if (isInView) {
-				hasAnimated = true;
-			}
-		}
+		isMobile = window.innerWidth < 768;
+		checkScrollButtons();
 	}
 
 	onMount(() => {
-		window.addEventListener('scroll', handleResize);
+		checkVisibility();
 		handleResize();
+		checkScrollButtons();
+		window.addEventListener('scroll', checkVisibility);
+		window.addEventListener('resize', handleResize);
 		return () => {
-			window.removeEventListener('scroll', handleResize);
+			window.removeEventListener('scroll', checkVisibility);
+			window.removeEventListener('resize', handleResize);
 		};
 	});
 </script>
 
-<section class="container py-14">
-	<TitleLayout
-		title="Crafting Digital Excellence"
-		subtitle="From concept to execution, see how we've brought groundbreaking ideas to life."
-	/>
-	<div
-		class="relative mt-4 flex gap-6 overflow-x-auto {isInView ? 'animate-fade-in' : ''}"
-		style="--animation-delay: 300ms;"
-	>
+<section bind:this={container} class="container relative py-12 md:py-24">
+	{#if isInView}
+		<div in:fly={{ y: 50, duration: 800 }}>
+			<TitleLayout
+				title="Our Latest Projects"
+				subtitle="Explore our portfolio of innovative digital solutions and success stories"
+			/>
+		</div>
+	{/if}
+
+	<div class="relative mt-8 md:mt-16">
 		<div
 			bind:this={scrollContainer}
-			class="hide-scrollbar flex transform gap-4 overflow-x-scroll px-5 py-6 transition-transform md:gap-7 md:px-0"
+			onscroll={checkScrollButtons}
+			class="hide-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth px-4 pb-8 pt-4 md:gap-6"
 		>
-			{#each projects as project}
-				<ProjectCard {...project} />
+			{#each projects as project, i}
+				{#if isInView}
+					<div
+						in:fly={{
+							x: 50,
+							duration: 800,
+							delay: i * 200
+						}}
+						class="relative w-[85vw] min-w-[320px] md:w-auto md:min-w-[510px]"
+					>
+						<ProjectCard {...project} />
+					</div>
+				{/if}
 			{/each}
 		</div>
-		<button
-			on:click={() => handleScroll(-400)}
-			aria-label="scroll left"
-			class="absolute left-3 top-[45%] z-30 hidden rounded-md bg-white/10 p-1 transition-colors duration-300 hover:bg-white/20 md:block"
-		>
-			<ArrowLeft class="h-7 text-white" />
-		</button>
-		<button
-			on:click={() => handleScroll(400)}
-			aria-label="scroll right"
-			class="absolute right-3 top-[45%] z-30 hidden rounded-md bg-white/10 p-1 transition-colors duration-300 hover:bg-white/20 md:block"
-		>
-			<ArrowRight class="h-7 text-white" />
-		</button>
+
+		{#if !isMobile}
+			{#if canScrollLeft}
+				<button
+					onclick={() => handleScroll('left')}
+					class="absolute -left-4 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-background/80 p-3 backdrop-blur-sm transition-all duration-300 hover:bg-background"
+					in:fly={{ x: -20, duration: 300 }}
+				>
+					<ArrowLeft class="size-5" />
+				</button>
+			{/if}
+
+			{#if canScrollRight}
+				<button
+					onclick={() => handleScroll('right')}
+					class="absolute -right-4 top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-background/80 p-3 backdrop-blur-sm transition-all duration-300 hover:bg-background"
+					in:fly={{ x: 20, duration: 300 }}
+				>
+					<ArrowRight class="size-5" />
+				</button>
+			{/if}
+		{/if}
+
+		<div
+			class="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background/80 to-transparent md:w-32"
+		></div>
+		<div
+			class="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background/80 to-transparent md:w-32"
+		></div>
 	</div>
 </section>
+
+<style>
+	.hide-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+		-webkit-overflow-scrolling: touch;
+	}
+	.hide-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+</style>
