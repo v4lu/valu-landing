@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { Icons } from '../icons';
-	import { Button } from '../ui/button';
-	import { Input } from '../ui/forms';
 
 	const currentYear = $state(new Date().getFullYear());
 
@@ -28,28 +26,11 @@
 	<div class="absolute inset-x-0 -top-4 h-12 bg-gradient-to-b from-transparent to-[rgba(3,0,20,0.08)]"></div>
 	<div class="container mx-auto px-6 pb-6 pt-8">
 		<div class="mb-8 flex flex-col items-center justify-between lg:flex-row lg:items-center">
-			<div class="mb-8 lg:mb-0">
-				<Icons.Logo />
+			<div>
+				<Icons.Logo width={40} height={40} />
 			</div>
 
 			<div class="mt-8 w-full md:w-fit lg:mt-0">
-				<h2 class="mb-4 text-sm font-semibold uppercase text-muted-foreground">Subscribe to our newsletter</h2>
-				<form class="flex w-full flex-col sm:flex-row">
-					<label for="email-address" class="sr-only">Email address</label>
-					<Input
-						id="email-address"
-						name="email"
-						type="email"
-						autocomplete="email"
-						required
-						class="h-fit sm:w-64"
-						placeholder="Enter your email"
-					/>
-					<div class="mt-4 sm:ml-4 sm:mt-0 sm:flex-shrink-0">
-						<Button type="submit" class="w-full">Subscribe</Button>
-					</div>
-				</form>
-
 				<div class="mt-6 flex justify-center gap-4 md:justify-end">
 					{#each socialLinks as { name, href, icon }}
 						<a {href} class="text-muted-foreground transition-colors hover:text-white" aria-label={name}>

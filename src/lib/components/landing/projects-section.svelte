@@ -62,7 +62,7 @@
 
 <section bind:this={container} class="container relative py-12 md:py-24">
 	{#if isInView}
-		<div in:fly={{ y: 50, duration: 800 }}>
+		<div in:fly={{ y: 50, duration: 400 }}>
 			<TitleLayout
 				title="Our Latest Projects"
 				subtitle="Explore our portfolio of innovative digital solutions and success stories"
@@ -81,10 +81,10 @@
 					<div
 						in:fly={{
 							x: 50,
-							duration: 800,
+							duration: 300,
 							delay: i * 200
 						}}
-						class="relative w-[85vw] min-w-[320px] md:w-auto md:min-w-[510px]"
+						class="relative w-[85vw] min-w-[310px] md:w-auto md:min-w-[510px]"
 					>
 						<ProjectCard {...project} />
 					</div>

@@ -1,6 +1,10 @@
-<script>
-	export let width = 50;
-	export let height = 50;
+<script lang="ts">
+	type Props = {
+		width: number;
+		height: number;
+	};
+
+	let { width, height }: Props = $props();
 </script>
 
 <div style="width: {width}px; height: {height}px;">

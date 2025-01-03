@@ -52,7 +52,6 @@
 		{/if}
 	</div>
 
-	<!-- Desktop/Tablet View -->
 	<div class="mt-8 hidden h-[600px] grid-cols-10 grid-rows-2 gap-6 md:grid">
 		{#each items as item, i}
 			<div

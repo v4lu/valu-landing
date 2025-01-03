@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { Loader2 } from 'lucide-svelte';
 	import Icon from '@iconify/svelte';
+	import * as z from 'zod';
+	import toast from 'sonner-svelte';
 	import { Button } from '../ui/button';
 	import { Input, Textarea } from '../ui/forms';
 	import { TitleLayout } from '../ui/title-layout';
+	import { enhance } from '$app/forms';
 
 	interface PlanFeature {
 		name: string;
@@ -84,15 +87,54 @@
 		}, 100);
 	});
 
-	async function handleSubmit(event: Event) {
-		event.preventDefault();
-		pending = true;
+	//method="POST"
+	//action="?/contact"
+
+	const schema = z.object({
+		firstName: z.string().min(2, 'Please enter a valid first name'),
+		lastName: z.string().min(2, 'Please enter a valid last name'),
+		email: z.string().email('Please enter a valid email address'),
+		message: z.string().min(50, 'Please enter a message with at least 50 characters')
+	});
+
+	function handleEnhance() {
+		return async ({ result, update }) => {
+			pending = true;
+
+			const formData = {
+				firstName,
+				lastName,
+				email,
+				message
+			};
+
+			const validation = schema.safeParse(formData);
+
+			if (!validation.success) {
+				pending = false;
+				toast.error(validation.error.errors[0].message);
+				return;
+			}
+
+			if (result.type === 'success') {
+				toast.success('Message sent successfully!');
+				firstName = '';
+				lastName = '';
+				email = '';
+				message = '';
+			} else if (result.type === 'error') {
+				toast.error('Failed to send message. Please try again.');
+			}
+
+			pending = false;
+			await update();
+		};
 	}
 </script>
 
 <svelte:window on:scroll={handleScroll} on:resize={handleScroll} />
 
-<section bind:this={container} id="contact" class="container py-8 md:py-14">
+<section id="contact" bind:this={container} class="container py-8 md:py-14">
 	<div class="title-container" style="min-height: 100px;">
 		<div class:opacity-0={!titleVisible} class:translate-y-8={!titleVisible} class="duration-800 transition-all">
 			<TitleLayout
@@ -136,25 +178,37 @@
 			class="contact-form mt-6 flex h-full w-full transform-gpu flex-col rounded-xl border border-white/10 bg-[rgba(3,0,20,0.08)] shadow-lg backdrop-blur-[12px] md:mt-0"
 		>
 			<div class="duration-800 h-full transition-all">
-				<form onsubmit={handleSubmit} class="flex h-full w-full flex-1 flex-col justify-between gap-4 p-4 md:p-6">
+				<form
+					use:enhance={handleEnhance}
+					method="POST"
+					action="?/contact"
+					class="flex h-full w-full flex-1 flex-col justify-between gap-4 p-4 md:p-6"
+				>
 					<div class="flex flex-1 flex-col gap-6">
 						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 							<div class="space-y-3">
 								<label for="first-name" class=" font-medium text-white">First Name</label>
-								<Input bind:value={firstName} id="first-name" placeholder="Enter your first name" required />
+								<Input
+									name="first-name"
+									bind:value={firstName}
+									id="first-name"
+									placeholder="Enter your first name"
+									required
+								/>
 							</div>
 							<div class="space-y-3">
 								<label for="last-name" class="font-medium text-white">Last Name</label>
-								<Input bind:value={lastName} id="last-name" placeholder="Enter your last name" />
+								<Input name="last-name" bind:value={lastName} id="last-name" placeholder="Enter your last name" />
 							</div>
 						</div>
 						<div class="space-y-3">
 							<label for="email" class="font-medium text-white">Email</label>
-							<Input bind:value={email} id="email" type="email" placeholder="Enter your email" required />
+							<Input bind:value={email} name="email" id="email" type="email" placeholder="Enter your email" required />
 						</div>
 						<div class=" flex-1 space-y-3">
 							<label for="message" class="font-medium text-white">Message</label>
 							<Textarea
+								name="message"
 								bind:value={message}
 								id="message"
 								class="h-40 resize-none md:h-full"

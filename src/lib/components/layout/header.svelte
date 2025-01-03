@@ -59,8 +59,11 @@
 	transition:fade={{ duration: 300 }}
 >
 	<header class="container flex w-full items-center justify-between px-4 py-4">
-		<a href="/" class="z-50 flex items-center" in:slide={{ duration: 300, easing: cubicOut }}>
-			<Icons.Logo />
+		<a href="/" class="z-50 hidden items-center md:flex" in:slide={{ duration: 300, easing: cubicOut }}>
+			<Icons.Logo height={50} width={50} />
+		</a>
+		<a href="/" class="z-50 ml-2 flex items-center md:hidden" in:slide={{ duration: 300, easing: cubicOut }}>
+			<Icons.Logo height={32} width={32} />
 		</a>
 		<nav class="hidden md:block">
 			<ul class="relative flex space-x-6">
@@ -92,21 +95,13 @@
 </div>
 
 {#if isToggledMenu}
-	<div
-		tabindex="0"
-		role="button"
-		aria-roledescription="close on click"
-		class="fixed inset-0 z-40 bg-black bg-opacity-50"
-		onclick={closeMenu}
-		transition:fade={{ duration: 300 }}
-	></div>
 	<nav
 		class="fixed inset-0 z-40 bg-[rgba(3,0,20,0.95)] backdrop-blur-lg"
 		transition:fly={{ y: -100, duration: 300, easing: cubicOut }}
 	>
 		<div class="container flex items-center justify-between px-4 py-4">
 			<div class="flex items-center">
-				<Icons.Logo />
+				<Icons.Logo width={50} height={50} />
 			</div>
 			<button onclick={toggleMenu}>
 				<X class="size-8" />
