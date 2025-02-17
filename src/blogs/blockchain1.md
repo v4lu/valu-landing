@@ -1,266 +1,171 @@
 ---
-title: "Blockchain Part 1: Building a Basic Blockchain in Rust"
-date: "2025-02-17"
-desc: "A short tutorial about creating a basic blockchain structure in Rust, exploring blocks, proof-of-work, and chain validation."
-cover: "/cover/nextjs-cover.webp"
+title: 'Blockchain Part 1: Building a Basic Blockchain in'
+date: '2025-02-17'
+desc: 'A short tutorial about creating a basic blockchain structure in Golang.'
+cover: '/cover/blockchain.webp'
 ---
 
-## Introduction
+# Building a Simple Blockchain in Go
 
-In this tutorial, we will build a basic blockchain in Rust. We'll explain the essential concepts behind blockchain technology and walk through the code that implements key functionalities like block creation, proof-of-work mining, and chain validation. Although this is a simplified version compared to production blockchains, it covers the foundational elements required to understand and build your own blockchain.
+Blockchain technology is widely known for its role in powering cryptocurrencies like Bitcoin and Ethereum. However, its underlying principles—immutability, decentralization, and security—make it useful for many other applications. In this post, we'll explore a simple blockchain implementation in Go.
 
-A blockchain is essentially a linked list of blocks where each block contains a set of transactions, a timestamp, and a cryptographic hash that connects it to the previous block. This design ensures the immutability and integrity of the stored data.
+## **Understanding the Blockchain Code**
 
-## Project Dependencies
+The Go program above implements a basic blockchain that supports adding new blocks, validating the chain, and saving/loading blockchain data to/from a file.
 
-Before we dive into the code, let’s review the key dependencies used in our project:
+### **1. The Block Structure**
 
-- **hex**: Converts binary data into hexadecimal strings.
-- **sha2**: Implements the SHA-256 hashing algorithm.
-- **serde** and **serde_json**: Enable serialization and deserialization of our data structures.
-- **log** and **env_logger**: Facilitate logging throughout the application.
-- **thiserror**: Simplifies error handling.
-- **clap**: Provides a simple command-line interface (CLI) parser.
+Each block contains:
 
-## The Block Structure
+- `Index`: Position in the chain.
+- `Timestamp`: When it was created.
+- `Data`: The information stored in the block.
+- `PrevHash`: Hash of the previous block.
+- `Hash`: The unique hash of the block.
 
-The blockchain is built from individual blocks. Each block holds the following fields:
-
-- **index**: The block’s position in the chain.
-- **timestamp**: The Unix timestamp when the block was created.
-- **transactions**: A list of transactions recorded in the block.
-- **previous_hash**: The hash of the preceding block.
-- **nonce**: A counter used in the proof-of-work process.
-- **hash**: The computed cryptographic hash of the block's contents.
-
-### Creating a New Block
-
-When a new block is created, we capture the current timestamp and initialize the `nonce` and `hash` fields. The following snippet shows how a new block template is generated:
-
-```rust
-use std::time::{SystemTime, UNIX_EPOCH};
-use sha2::{Digest, Sha256};
-use serde::{Serialize, Deserialize};
-use crate::error::BlockError;
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Block {
-    pub index: u64,
-    pub timestamp: u64,
-    pub transactions: Vec<String>,
-    pub previous_hash: String,
-    pub nonce: u64,
-    pub hash: String,
+```go
+type Block struct {
+    Index     int
+    Timestamp string
+    Data      string
+    PrevHash  string
+    Hash      string
 }
+```
 
-impl Block {
-    /// Creates a new unmined block template.
-    pub fn new(
-        index: u64,
-        transactions: Vec<String>,
-        previous_hash: String,
-    ) -> Result<Self, BlockError> {
-        let timestamp = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .map_err(|_| BlockError::InvalidTimestamp)?
-            .as_secs();
+### **2. Hash Calculation**
 
-        Ok(Block {
-            index,
-            timestamp,
-            transactions,
-            previous_hash,
-            nonce: 0, // Initial nonce value
-            hash: String::new(), // Will be calculated during mining
-        })
+A block's hash is calculated using the SHA-256 algorithm by combining its index, timestamp, data, and the previous block's hash.
+
+```go
+func (b *Block) calculateHash() string {
+    data := fmt.Sprintf("%d%s%s%s", b.Index, b.Timestamp, b.Data, b.PrevHash)
+    hash := sha256.Sum256([]byte(data))
+    return hex.EncodeToString(hash[:])
+}
+```
+
+### **3. Genesis Block Creation**
+
+Every blockchain starts with a **genesis block**, the first block in the chain.
+
+```go
+func NewBlockchain() *Blockchain {
+    genesisBlock := &Block{
+        Index:     0,
+        Timestamp: time.Now().Format(time.RFC3339),
+        Data:      "Genesis Block",
+        PrevHash:  "",
     }
+    genesisBlock.Hash = genesisBlock.calculateHash()
+    return &Blockchain{Blocks: []*Block{genesisBlock}}
+}
+```
 
-Calculating the Block Hash
+### **4. Adding New Blocks**
 
-To ensure data integrity, each block’s hash is calculated using the SHA-256 algorithm. The calculate_hash method concatenates the block’s properties (including the nonce) and generates a hexadecimal hash string:
+Each new block references the hash of the previous block.
 
-    /// Calculates SHA-256 hash of block contents.
-    pub fn calculate_hash(&self) -> Result<String, BlockError> {
-        let mut hasher = Sha256::new();
-        hasher.update(self.index.to_string());
-        hasher.update(self.timestamp.to_string());
-        hasher.update(
-            serde_json::to_string(&self.transactions)
-                .map_err(|_| BlockError::HashCalculationFailed)?,
-        );
-        hasher.update(&self.previous_hash);
-        hasher.update(self.nonce.to_string());
-
-        Ok(hex::encode(hasher.finalize()))
+```go
+func (bc *Blockchain) AddBlock(data string) {
+    prevBlock := bc.Blocks[len(bc.Blocks)-1]
+    newBlock := &Block{
+        Index:     prevBlock.Index + 1,
+        Timestamp: time.Now().Format(time.RFC3339),
+        Data:      data,
+        PrevHash:  prevBlock.Hash,
     }
+    newBlock.Hash = newBlock.calculateHash()
+    bc.Blocks = append(bc.Blocks, newBlock)
+}
+```
 
-The Genesis Block
+### **5. Blockchain Validation**
 
-Every blockchain starts with a genesis block—the first block in the chain. It uses predefined values and serves as the foundation for all subsequent blocks:
+The program verifies that:
 
-    /// Generates the genesis (first) block.
-    pub fn genesis() -> Self {
-        Block {
-            index: 0,
-            timestamp: UNIX_EPOCH.elapsed().unwrap().as_secs(),
-            transactions: vec!["Genesis Block".to_string()],
-            previous_hash: "0".to_string(),
-            nonce: 0,
-            hash: "0000000000000000000000000000000000000000000000000000000000000000".to_string(),
+1. Each block correctly references the hash of the previous block.
+2. Each block’s hash is valid.
+
+```go
+func (bc *Blockchain) Validate() bool {
+    for i := 1; i < len(bc.Blocks); i++ {
+        currentBlock := bc.Blocks[i]
+        prevBlock := bc.Blocks[i-1]
+
+        if currentBlock.PrevHash != prevBlock.Hash {
+            return false
+        }
+
+        if currentBlock.Hash != currentBlock.calculateHash() {
+            return false
         }
     }
-
-Proof-of-Work (Mining)
-
-The mine method implements a basic proof-of-work algorithm. It iterates over possible nonce values until the resulting hash meets the required difficulty (i.e., the hash starts with a specified number of zeros):
-
-    /// Proof-of-Work mining process.
-    /// Iterates nonce until hash meets the difficulty requirement.
-    pub fn mine(&mut self, difficulty: usize) -> Result<(), BlockError> {
-        self.nonce = 0; // Reset nonce for mining
-        loop {
-            self.hash = self.calculate_hash()?;
-            if self.hash.starts_with(&"0".repeat(difficulty)) {
-                return Ok(()); // Valid hash found
-            }
-            self.nonce += 1; // Try next nonce
-        }
-    }
+    return true
 }
+```
 
-Building the Blockchain
+### **6. Saving and Loading the Blockchain**
 
-The Blockchain struct manages a sequence of blocks and handles tasks such as adding new blocks and validating the entire chain.
-Key Responsibilities
+The blockchain is saved in a JSON file.
 
-    Initialization: The blockchain is initiated with the genesis block.
-    Adding Blocks: New blocks are created, mined, and appended to the chain after verifying that the chain remains valid.
-    Validation: Ensures each block's hash is correct, meets the proof-of-work requirement, and properly references the previous block.
-    Chain Replacement: Allows the chain to be replaced with a longer, valid chain—a mechanism used in distributed consensus protocols.
-
-Blockchain Implementation
-
-Below is the simplified implementation of the blockchain (excluding test-related code):
-
-use serde::{Serialize, Deserialize};
-use crate::block::Block;
-use crate::error::BlockchainError;
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Blockchain {
-    pub chain: Vec<Block>,
-    pub difficulty: usize,
+```go
+func (bc *Blockchain) Save(filename string) error {
+    file, err := json.MarshalIndent(bc, "", "  ")
+    if err != nil {
+        return err
+    }
+    return os.WriteFile(filename, file, 0o644)
 }
+```
 
-impl Blockchain {
-    /// Creates a new blockchain with a genesis block.
-    pub fn new(difficulty: usize) -> Self {
-        Blockchain {
-            chain: vec![Block::genesis()],
-            difficulty,
-        }
+To load an existing blockchain:
+
+```go
+func LoadBlockchain(filename string) (*Blockchain, error) {
+    file, err := os.ReadFile(filename)
+    if err != nil {
+        return nil, err
     }
 
-    /// Adds a new block to the blockchain with the given transactions.
-    pub fn add_block(&mut self, transactions: Vec<String>) -> Result<(), BlockchainError> {
-        let previous_block = self.chain.last().ok_or(BlockchainError::EmptyChain)?;
-
-        // Create new block template.
-        let mut new_block = Block::new(
-            previous_block.index + 1,
-            transactions,
-            previous_block.hash.clone(),
-        ).map_err(|e| BlockchainError::ValidationFailed(e.to_string()))?;
-
-        // Mine the block to meet the difficulty requirement.
-        new_block.mine(self.difficulty)
-            .map_err(|e| BlockchainError::ValidationFailed(e.to_string()))?;
-
-        // Verify chain integrity before adding.
-        if self.is_valid() {
-            self.chain.push(new_block);
-            Ok(())
-        } else {
-            Err(BlockchainError::ValidationFailed("Invalid block created".into()))
-        }
+    var bc Blockchain
+    err = json.Unmarshal(file, &bc)
+    if err != nil {
+        return nil, err
     }
 
-    /// Validates the integrity of the blockchain.
-    pub fn is_valid(&self) -> bool {
-        self.chain.windows(2).all(|window| {
-            let (prev, current) = (&window[0], &window[1]);
-            current.hash == current.calculate_hash().unwrap_or_default() && // Hash matches content
-            current.hash.starts_with(&"0".repeat(self.difficulty)) &&       // Proof-of-Work check
-            current.previous_hash == prev.hash                               // Proper chaining
-        })
-    }
-
-    /// Replaces the current chain with a new one if it is longer and valid.
-    pub fn replace_chain(&mut self, new_chain: Vec<Block>) -> Result<(), BlockchainError> {
-        if new_chain.len() > self.chain.len() && self.validate_chain(&new_chain) {
-            self.chain = new_chain;
-            Ok(())
-        } else {
-            Err(BlockchainError::ValidationFailed(
-                "New chain is not valid or longer".into(),
-            ))
-        }
-    }
-
-    /// Internal helper to validate a provided chain.
-    fn validate_chain(&self, chain: &[Block]) -> bool {
-        chain.windows(2).all(|window| {
-            let (prev, current) = (&window[0], &window[1]);
-            current.hash == current.calculate_hash().unwrap_or_default() &&
-            current.hash.starts_with(&"0".repeat(self.difficulty)) &&
-            current.previous_hash == prev.hash
-        })
-    }
+    return &bc, nil
 }
+```
 
-Command-Line Interface
+## **Running the Blockchain**
 
-The project utilizes the clap crate to offer a simple CLI, allowing you to interact with the blockchain. The available commands include:
+### **1. Adding Blocks**
 
-    New: Create a new blockchain with a specified difficulty.
-    Add: Append a block with a set of transactions.
-    Print: Display the entire blockchain.
-    Validate: Check if the blockchain is valid.
-    Mine: Re-mine a specific block to adjust its nonce.
+To add a block with data `"Hello, Blockchain!"`, run:
 
-Here’s an excerpt showing how the CLI is set up:
+```sh
+go run main.go add -data "Hello, Blockchain!"
+```
 
-use clap::{Parser, Subcommand};
+### **2. Printing the Blockchain**
 
-#[derive(Parser)]
-#[command(version, about)]
-struct Cli {
-    #[command(subcommand)]
-    command: Commands,
-}
+To see all blocks:
 
-#[derive(Subcommand)]
-enum Commands {
-    New {
-        #[arg(short, long, default_value_t = 2)]
-        difficulty: usize,
-    },
-    Add { transactions: Vec<String> },
-    Print,
-    Validate,
-    Mine { block_index: usize },
-}
+```sh
+go run main.go print
+```
 
-In the main function, we load the blockchain (or create a new one if none exists), process the CLI command, and then save the updated state to a JSON file. This approach ensures that the blockchain persists between sessions.
-Conclusion
+### **3. Validating the Blockchain**
 
-In this tutorial, we built a basic blockchain in Rust by:
+To check integrity:
 
-    Defining a Block structure that contains key data fields and methods to calculate its hash.
-    Implementing a simple proof-of-work algorithm to mine blocks.
-    Creating a Blockchain structure that manages block addition, chain validation, and chain replacement.
-    Integrating a command-line interface to interact with the blockchain.
+```sh
+go run main.go validate
+```
 
-This project serves as a foundation for understanding how blockchains work under the hood. While it omits many complexities of full-scale blockchains, it provides a hands-on introduction to essential blockchain concepts. Future tutorials can build upon this base to explore more advanced features and optimizations.
+## Next Steps
 
-Happy coding and exploring the world of blockchain with Rust!
+In next few blogs we will expand our blockchain, this is great start to understand how blockchain works. Stay tuned for more.
+
+Repository can be find [here](https://github.com/lucabrx/blockchain/tree/blockchain1)

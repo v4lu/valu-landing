@@ -10,6 +10,7 @@
 	import 'prismjs/components/prism-markup';
 	import 'prismjs/components/prism-typescript';
 	import 'prismjs/components/prism-jsx.js';
+	import 'prismjs/components/prism-rust';
 	import 'prism-svelte';
 	import 'prismjs/themes/prism-okaidia.css';
 
