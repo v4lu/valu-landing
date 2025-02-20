@@ -30,9 +30,8 @@
 		</section>
 	</HeroPatternMobile>
 	<AboutSection />
-	<ProjectsSection />
-	<!-- <ProjectsSection /> -->
 	<WorkshopsSection items={data.posts} />
+	<ProjectsSection />
 	<ContactSection />
 	<TestimonialSection />
 	<NewsletterSection />

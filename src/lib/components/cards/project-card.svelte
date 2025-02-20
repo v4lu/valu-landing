@@ -13,7 +13,7 @@
 </script>
 
 <div
-	class="relative flex h-full w-full shrink-0 snap-center flex-col items-center justify-between gap-3 overflow-hidden rounded-md border border-white/10 bg-[rgba(255,255,255,0.05)] pb-4 md:min-h-[450px] md:gap-5"
+	class="relative flex h-full w-full shrink-0 snap-center flex-col items-center justify-between gap-3 overflow-hidden rounded-md border border-white/10 bg-[rgba(255,255,255,0.05)] md:min-h-[450px] md:gap-5"
 >
 	<div class="relative w-full cursor-pointer">
 		<img src={image} alt={title} width={510} height={286} class="aspect-video h-full w-full object-cover" />

@@ -3,6 +3,7 @@
 	import { FeatureCard } from '../cards';
 	import { TitleLayout } from '../ui/title-layout';
 	import { features } from '$lib/config';
+	import { cn } from '$lib/cn';
 
 	let container = $state<HTMLElement>();
 	let scrollContainer = $state<HTMLElement>();
@@ -51,7 +52,6 @@
 		{/if}
 	</div>
 
-	<!-- Desktop/Tablet View -->
 	<div class="relative mt-12 hidden w-full md:block">
 		<ul class="grid w-full gap-8 sm:grid-cols-2 lg:grid-cols-3">
 			{#each features as feature, index}
@@ -72,7 +72,10 @@
 		<div class="overflow-hidden">
 			<ul bind:this={scrollContainer} class="hide-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto">
 				{#each features as feature, index}
-					<li class="feature-card snap-center" style="min-width: 280px; max-width: 90vw;">
+					<li
+						class={cn('feature-card', index === 0 ? 'snap-start' : 'snap-center')}
+						style="min-width: 280px; max-width: 90vw;"
+					>
 						{#if visibleFeatures[index]}
 							<div in:fly={{ y: 50, duration: 800, delay: index * 200 }}>
 								<FeatureCard class="h-[20rem]" {...feature} />
