@@ -25,6 +25,7 @@
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@tailwindcss/typography": "^0.5.15",
 		"@types/eslint": "^9.6.0",
+		"@types/js-yaml": "^4.0.9",
 		"@types/node": "^22.5.3",
 		"@types/prismjs": "^1.26.4",
 		"autoprefixer": "^10.4.19",

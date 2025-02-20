@@ -10,8 +10,8 @@ import { SECRET_RESEND_API_KEY } from '$env/static/private';
 const resend = new Resend(SECRET_RESEND_API_KEY);
 
 export const load: PageServerLoad = async () => {
-	//const postsDirectory = join(process.cwd(), 'build', 'src', 'blogs');
-	const postsDirectory = join('src', 'blogs');
+	const postsDirectory = join(process.cwd(), 'build', 'src', 'blogs');
+	// const postsDirectory = join('src', 'blogs');
 
 	const files = await readdir(postsDirectory);
 
