@@ -5,11 +5,8 @@ import type { PageServerLoad } from './$types';
 import type { Metadata, Post } from '$lib/types';
 
 export const load: PageServerLoad = async () => {
-	const postsDirectory = join(process.cwd(), 'build', 'src', 'blogs');
-	console.log('Posts directory:', postsDirectory);
-
+	const postsDirectory = join(process.cwd(), 'src', 'blogs');
 	const files = await readdir(postsDirectory);
-	console.log('Files:', files);
 
 	const posts: Post[] = await Promise.all(
 		files.map(async (file) => {

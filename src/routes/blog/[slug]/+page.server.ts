@@ -13,7 +13,7 @@ type Metadata = {
 
 export const load: PageServerLoad = async ({ params }) => {
 	// const postsDirectory = join(process.cwd(), 'build', 'src', 'blogs');
-	const postsDirectory = join('src', 'blogs');
+	const postsDirectory = join(process.cwd(), 'src', 'blogs');
 	const filePath = join(postsDirectory, `${params.slug}.md`);
 
 	const fileContent = await readFile(filePath, 'utf-8');
